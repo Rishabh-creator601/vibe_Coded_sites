@@ -103,6 +103,39 @@ cp server/.env.example server/.env   # MONGO_URI, JWT_SECRET, ...
 
 ---
 
+## 🛠️ Troubleshooting
+
+### API window closes / every request fails: `querySrv ENOTFOUND`
+
+```
+✗ MongoDB connection failed: querySrv ENOTFOUND _mongodb._tcp.<cluster>.mongodb.net
+```
+
+The backend exits when it can't connect to MongoDB. The frontend still loads, but every `/api` call fails because nothing is listening on port 5000. `ENOTFOUND` means the Atlas hostname in `MONGO_URI` doesn't exist. Usually the cluster was deleted, or the connection string has a typo. To confirm it's not your network, look the name up through a public DNS server:
+
+```powershell
+Resolve-DnsName -Type SRV _mongodb._tcp.<cluster>.mongodb.net -Server 8.8.8.8
+```
+
+If that also says *DNS name does not exist*, fix it one of these two ways:
+
+**Option 1: use a local MongoDB** (quickest; local development only). Make sure MongoDB is installed and its service is running, then in `server/.env` set:
+
+```
+MONGO_URI=mongodb://127.0.0.1:27017/calorie-tracker
+```
+
+Run `start.bat` again. Data stored in the old Atlas cluster won't be there.
+
+**Option 2: point to a working Atlas cluster** (required for Vercel, because Vercel can't reach a database on your PC).
+1. Log in to [cloud.mongodb.com](https://cloud.mongodb.com) and check whether your cluster still exists. If it doesn't, create a new one (see `atlas.txt`).
+2. Copy the connection string from **Connect → Drivers** and add `/calorie-tracker` before the `?`.
+3. Put it in `server/.env` as `MONGO_URI`. For deployments, also update it in the Vercel project's **Settings → Environment Variables**, then redeploy.
+
+**Check:** `npm run dev` in `server/` should print `✓ Connected to MongoDB`, and http://localhost:5000/api/health should return `{"status":"ok"}`.
+
+---
+
 ## ☁️ Deploy to Vercel
 
 The whole app ships as a **single Vercel project**: the Vite build is served as static files, and the Express API runs as a serverless function under `/api/*`. The client calls the API with same-origin `/api` paths, so there's **no CORS or extra URL config**.
