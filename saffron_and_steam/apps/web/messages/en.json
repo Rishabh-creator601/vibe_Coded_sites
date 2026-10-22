@@ -305,7 +305,9 @@
     "payAtCafe": "Pay at the café",
     "another": "Book another table",
     "notFound": "We couldn't find this booking on this device. In this demo, bookings are saved in your browser.",
-    "demoNote": "Demo: the booking is saved in this browser. The live version sends it to the café and emails you a confirmation."
+    "demoNote": "Demo: the booking is saved in this browser. The live version sends it to the café and emails you a confirmation.",
+    "notFoundLink": "We couldn't find this booking. Open it from the link on your confirmation page.",
+    "savedNote": "Demo: the café has your booking. The live version also emails you a confirmation."
   },
   "checkout": {
     "title": "Checkout",
@@ -356,7 +358,8 @@
       "ready": "Ready",
       "completed": "Completed",
       "outForDelivery": "Out for delivery",
-      "delivered": "Delivered"
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
     },
     "pickup": "Pickup from the counter",
     "dineIn": "Dine-in, table {table}",
@@ -367,7 +370,11 @@
     "items": "Items",
     "demoNote": "Demo: the status moves on by itself every minute or so, so you can see how tracking works.",
     "notFound": "We couldn't find this order on this device. In this demo, orders are saved in your browser.",
-    "more": "Order something else"
+    "more": "Order something else",
+    "notFoundLink": "We couldn't find this order. Open it from the link on your confirmation page.",
+    "payPending": "Payment not completed",
+    "waitingPayment": "The kitchen starts once the online payment is complete.",
+    "cancelledNote": "This order was cancelled because the online payment wasn't completed."
   },
   "about": {
     "title": "Our story",
@@ -445,5 +452,18 @@
     "waText": "Hi Saffron & Steam! I'd like to book a table.",
     "waTextNamed": "Hi Saffron & Steam! I'm {name}. I'd like to book a table.",
     "waTextParty": "Hi Saffron & Steam! I'm {name}, table for {party}. I'd like to book."
+  },
+  "apiErrors": {
+    "itemUnavailable": "{dish} can't be ordered right now. Remove it from your cart and try again.",
+    "belowMinimum": "Your order is below the {min} minimum for your area.",
+    "deliveryUnavailable": "Sorry, we don't deliver to this pincode yet. Pickup is available.",
+    "paymentUnavailable": "This payment option isn't available for this order. Choose another one.",
+    "pickupTime": "That pickup time has passed. Choose a later one.",
+    "slotFull": "That time only has {seats} seats left. Choose another time.",
+    "slotUnavailable": "That time can't be booked any more. Choose another time.",
+    "cancelled": "This order was cancelled.",
+    "rateLimited": "Too many attempts. Wait a few minutes and try again.",
+    "network": "We couldn't reach the café's server. Check your connection and try again.",
+    "generic": "Something went wrong. Please try again."
   }
 }

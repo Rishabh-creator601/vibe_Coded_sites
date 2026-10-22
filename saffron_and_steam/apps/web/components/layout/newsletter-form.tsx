@@ -2,10 +2,11 @@
 
 import { useId, useState } from "react";
 import { useTranslations } from "next-intl";
+import { USE_API } from "@/lib/api";
 
 type State = "idle" | "sending" | "done" | "error" | "invalid";
 
-/** Posts to the API's POST /newsletter through the same-origin /api rewrite. */
+/** Posts to the API's POST /newsletter through the same-origin /api rewrite (demo: just confirms). */
 export function NewsletterForm() {
   const t = useTranslations("footer");
   const id = useId();
@@ -19,6 +20,11 @@ export function NewsletterForm() {
     if (data.get("company")) return;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setState("invalid");
     setState("sending");
+    if (!USE_API) {
+      // Browser-only demo: there is no API to save the address, so just confirm.
+      setTimeout(() => setState("done"), 500);
+      return;
+    }
     try {
       const res = await fetch("/api/v1/newsletter", {
         method: "POST",

@@ -7,7 +7,6 @@ import { demoSettings, LOCALES } from "@saffron/shared";
 import { routing } from "@/i18n/routing";
 import { fontClasses } from "@/lib/fonts";
 import { CartDrawer, MobileCartBar } from "@/components/cart/cart-drawer";
-import { ChatWidget } from "@/components/chat/chat-widget";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { StoreHydration } from "@/lib/use-hydrated";
@@ -59,7 +58,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <SiteFooter settings={demoSettings} />
           <CartDrawer />
           <MobileCartBar />
-          <ChatWidget />
+          {/* Chatbot switched off for the demo. To bring it back, import ChatWidget from
+              "@/components/chat/chat-widget" and render <ChatWidget /> here. */}
           <StoreHydration />
         </NextIntlClientProvider>
       </body>
