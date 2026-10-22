@@ -32,7 +32,7 @@ export function ContactForm() {
     setState("sending");
     try {
       const res = await sendContactMessage({ name: data.name, email: data.email, phone: data.phone, topic: data.topic, message: data.message, company: data.company });
-      setState("idle");
+      setState(!res.ok && res.failed ? "failed" : "idle");
       if (res.ok) {
         setErrors({});
         setSent({ ref: res.ref, name: data.name.trim(), email: data.email.trim() });

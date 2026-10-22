@@ -10,21 +10,25 @@ import {
   formatNumber,
   formatPrice,
   getItemAvailability,
+  isEmail,
   makeReference,
+  normalisePhone,
   priceLines,
   quoteDelivery,
   toMinutes,
   type CafeSettings,
   type Locale,
+  type OrderRecord,
   type OrderType,
   type PaymentMethod,
 } from "@saffron/shared";
 import { Link, useRouter } from "@/i18n/navigation";
 import { DemoPayment } from "@/components/payment/demo-payment";
 import { describedBy, Field, inputClass, OptionCard } from "@/components/ui/form";
+import { apiFetch, USE_API } from "@/lib/api";
+import { useApiErrorMessage } from "@/lib/use-api-error";
 import { useCafeNow } from "@/lib/use-cafe-now";
 import { useStoresHydrated } from "@/lib/use-hydrated";
-import { isEmail, normalisePhone } from "@/lib/validate";
 import { useCart } from "@/store/cart";
 import { useRecords } from "@/store/records";
 import { LineSummary, TotalsSummary } from "./line-summary";
@@ -59,6 +63,12 @@ export function CheckoutForm({ settings }: { settings: CafeSettings }) {
   const [errors, setErrors] = useState<Partial<Record<ErrorKey, string>>>({});
   const [paying, setPaying] = useState(false);
   const [doneId, setDoneId] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  // API mode: the order waiting for the demo payment. Closing the payment screen drops
+  // it; the API cancels unpaid online orders after 15 minutes.
+  const [pending, setPending] = useState<{ id: string; token: string } | null>(null);
+  const apiErrorMessage = useApiErrorMessage();
 
   const priced = priceLines(lines, demoMenu);
   const subtotal = priced.reduce((s, l) => s + l.lineTotal, 0);
@@ -82,6 +92,56 @@ export function CheckoutForm({ settings }: { settings: CafeSettings }) {
     if (method === "cod" && !codAllowed) setMethod("online");
   }, [type, method, codAllowed]);
 
+  const done = useCallback(
+    (id: string, token?: string) => {
+      setDoneId(id);
+      clearCart();
+      router.replace({ pathname: "/order", query: token ? { id, token } : { id } });
+    },
+    [clearCart, router],
+  );
+
+  /** API mode: the server checks and prices the order again before saving it. */
+  async function placeOrder() {
+    setSubmitting(true);
+    setApiError(null);
+    try {
+      const { order, token } = await apiFetch<{ order: OrderRecord; token: string }>("/orders", {
+        method: "POST",
+        body: {
+          locale,
+          type,
+          pickupTime: type === "pickup" ? pickupTime : undefined,
+          table: type === "dineIn" ? table.trim() : undefined,
+          address: type === "delivery" ? address : undefined,
+          customer,
+          lines: lines.map(({ slug, qty, variant, addOns }) => ({ slug, qty, variant, addOns: addOns?.length ? addOns : undefined })),
+          paymentMethod: method,
+        },
+      });
+      if (method === "online") {
+        setPending({ id: order.id, token });
+        setPaying(true);
+      } else done(order.id, token);
+    } catch (err) {
+      setApiError(apiErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function payPending() {
+    if (!pending) return;
+    try {
+      await apiFetch(`/orders/${pending.id}/demo-payment`, { method: "POST", body: { token: pending.token } });
+      done(pending.id, pending.token);
+    } catch (err) {
+      setPaying(false);
+      setPending(null);
+      setApiError(apiErrorMessage(err));
+    }
+  }
+
   const finish = useCallback(
     (paid: boolean) => {
       const id = makeReference("SO", now?.isoDate ?? new Date().toISOString().slice(0, 10));
@@ -98,11 +158,9 @@ export function CheckoutForm({ settings }: { settings: CafeSettings }) {
         totals,
         payment: { method, status: paid ? "paid" : "pending" },
       });
-      setDoneId(id);
-      clearCart();
-      router.replace({ pathname: "/order", query: { id } });
+      done(id);
     },
-    [now, saveOrder, locale, type, pickupTime, table, address, customer, lines, totals, method, clearCart, router],
+    [now, saveOrder, locale, type, pickupTime, table, address, customer, lines, totals, method, done],
   );
 
   function onSubmit(e: React.FormEvent) {
@@ -125,7 +183,8 @@ export function CheckoutForm({ settings }: { settings: CafeSettings }) {
       formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
       return;
     }
-    if (method === "online") setPaying(true);
+    if (USE_API) void placeOrder();
+    else if (method === "online") setPaying(true);
     else finish(false);
   }
 
@@ -300,13 +359,26 @@ export function CheckoutForm({ settings }: { settings: CafeSettings }) {
               {tf("fixErrors")}
             </p>
           )}
-          <button type="submit" className="btn mt-5 w-full cursor-pointer bg-saffron text-roast hover:bg-saffron-soft">
+          {apiError && (
+            <p role="alert" className="mt-4 rounded-xl bg-cream/10 px-3 py-2 text-sm">
+              {apiError}
+            </p>
+          )}
+          <button type="submit" disabled={submitting} className="btn mt-5 w-full cursor-pointer bg-saffron text-roast hover:bg-saffron-soft disabled:cursor-wait disabled:opacity-70">
             {method === "online" ? t("placePay", { amount: formatPrice(totals.total, locale) }) : t("place")}
           </button>
         </div>
       </aside>
 
-      <DemoPayment amount={totals.total} open={paying} onClose={() => setPaying(false)} onPaid={() => finish(true)} />
+      <DemoPayment
+        amount={totals.total}
+        open={paying}
+        onClose={() => {
+          setPaying(false);
+          setPending(null);
+        }}
+        onPaid={() => (USE_API ? void payPending() : finish(true))}
+      />
     </form>
   );
 }

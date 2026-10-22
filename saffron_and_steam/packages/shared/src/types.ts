@@ -98,6 +98,8 @@ export interface CafeSettings {
   tagline: Localized;
   address: Localized;
   phone: string;
+  /** WhatsApp number with country code and no "+", as wa.me links need it: "919876543210". */
+  whatsapp: string;
   email: string;
   timezone: string;
   /** Opening and closing for tea, coffee and desserts. */

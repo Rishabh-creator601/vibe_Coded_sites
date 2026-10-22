@@ -389,5 +389,61 @@
     "license": "Licence",
     "source": "Source",
     "view": "View on {source}"
+  },
+  "chat": {
+    "launcher": "Ask Kesar",
+    "open": "Chat with Kesar, our assistant",
+    "title": "Kesar",
+    "status": "Your table picks in a minute",
+    "about": "Kesar is an AI assistant. Answers come from our menu and café details, so please check allergens with our staff.",
+    "info": "About this assistant",
+    "restart": "Start a new chat",
+    "close": "Close chat",
+    "hello": "Hi! 👋 I'm Kesar from Saffron & Steam. I'll pick a spread for your table. What's your name?",
+    "ask": {
+      "name": "What's your name?",
+      "party": "Nice to meet you, {name}! How many people are coming?",
+      "meal": "Breakfast, lunch or dinner?",
+      "cuisine": "Which food do you like?",
+      "diet": "Any diet I should know about?"
+    },
+    "placeholder": {
+      "name": "Your name",
+      "party": "Number of people",
+      "meal": "Breakfast, lunch or dinner",
+      "cuisine": "Indian, Italian, Japanese…",
+      "diet": "Veg, vegan, egg or non-veg",
+      "free": "Ask about the menu, hours, delivery…"
+    },
+    "quickReplies": "Quick answers",
+    "surprise": "Surprise me",
+    "diet": {
+      "veg": "Veg",
+      "vegan": "Vegan",
+      "egg": "Egg is fine",
+      "any": "Non-veg too"
+    },
+    "fallback": {
+      "summary": "Here's a spread for {party, plural, one {# person} other {# people}}, {name}. Tap Visualizer to see it.",
+      "found": "Here's what I found on our menu.",
+      "noAnswer": "I'm not sure about that one. Message us on WhatsApp and the team will help.",
+      "error": "I'm having trouble right now. Please try again, or message us on WhatsApp.",
+      "busy": "That's a lot of messages! Please wait a few minutes, or message us on WhatsApp."
+    },
+    "visualizer": "Visualizer",
+    "hideVisualizer": "Hide Visualizer",
+    "showGallery": "Show Gallery",
+    "picksLabel": "Dishes picked for you",
+    "prev": "Previous dishes",
+    "next": "More dishes",
+    "browseGallery": "Browse our full gallery",
+    "seeMenu": "See the full menu",
+    "send": "Send",
+    "input": "Message",
+    "typing": "Kesar is typing",
+    "whatsapp": "Chat with us on WhatsApp",
+    "waText": "Hi Saffron & Steam! I'd like to book a table.",
+    "waTextNamed": "Hi Saffron & Steam! I'm {name}. I'd like to book a table.",
+    "waTextParty": "Hi Saffron & Steam! I'm {name}, table for {party}. I'd like to book."
   }
 }

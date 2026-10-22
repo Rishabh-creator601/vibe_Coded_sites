@@ -5,6 +5,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Chip } from "@/components/ui/form";
+import { useQueryParam } from "@/lib/use-query-param";
 
 export type GalleryCategory = "breakfast" | "lunch" | "dinner" | "tea-coffee" | "desserts" | "cafe";
 
@@ -22,7 +23,11 @@ export interface GalleryPhoto {
 export function GalleryGrid({ photos, categories }: { photos: GalleryPhoto[]; categories: { key: GalleryCategory; label: string }[] }) {
   const t = useTranslations("gallery");
   const id = useId();
-  const [filter, setFilter] = useState<GalleryCategory | "all">("all");
+  // The chatbot links here with ?cat=dinner. Read in the browser only, so the
+  // pre-rendered page always starts on "All".
+  const urlCat = useQueryParam("cat");
+  const [picked, setFilter] = useState<GalleryCategory | "all" | null>(null);
+  const filter = picked ?? (categories.some((c) => c.key === urlCat) ? (urlCat as GalleryCategory) : "all");
   const [index, setIndex] = useState<number | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const shown = filter === "all" ? photos : photos.filter((p) => p.category === filter);

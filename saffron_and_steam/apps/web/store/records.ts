@@ -2,53 +2,12 @@
 
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { Cuisine, LineInput, Locale, MealPeriodKey, OrderType, PaymentMethod, Totals } from "@saffron/shared";
+import type { BookingDraft, BookingRecord, OrderRecord } from "@saffron/shared";
 
-// Demo stand-in for the API: orders and bookings are kept in this browser only.
-// Phase 4 replaces these with POST /orders and POST /reservations.
+export type { BookingDraft, BookingRecord, Customer, DietPreference, OrderRecord } from "@saffron/shared";
 
-export interface Customer {
-  name: string;
-  phone: string;
-  email: string;
-}
-
-export interface OrderRecord {
-  id: string;
-  createdAt: string;
-  locale: Locale;
-  type: OrderType;
-  /** "asap" or minutes after midnight, for pickup orders. */
-  pickupTime?: "asap" | number;
-  table?: string;
-  address?: { line1: string; line2: string; landmark: string; city: string; pincode: string };
-  customer: Customer;
-  lines: LineInput[];
-  totals: Totals;
-  payment: { method: PaymentMethod; status: "paid" | "pending" };
-}
-
-export type DietPreference = "any" | "veg" | "vegan";
-
-export interface BookingDraft {
-  date: string;
-  period: MealPeriodKey;
-  /** Minutes after midnight. */
-  time: number;
-  party: number;
-  cuisines: Cuisine[];
-  diet: DietPreference;
-  preorder: LineInput[];
-  customer: Customer;
-  notes: string;
-}
-
-export interface BookingRecord extends BookingDraft {
-  id: string;
-  createdAt: string;
-  preorderTotals: Totals | null;
-  payment: { method: "online" | "atCafe"; status: "paid" | "pending" };
-}
+// The booking draft (between the form and the review page) always lives here. Orders
+// and bookings are kept here too when the site runs without the API (lib/api.ts).
 
 interface RecordsState {
   orders: Record<string, OrderRecord>;

@@ -3,11 +3,24 @@
 import { useCallback, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { LoaderCircle } from "lucide-react";
-import { computeTotals, demoMenu, formatClock, formatDate, formatPrice, makeReference, priceLines, type CafeSettings, type Locale } from "@saffron/shared";
+import {
+  computeTotals,
+  demoMenu,
+  formatClock,
+  formatDate,
+  formatPrice,
+  makeReference,
+  priceLines,
+  type BookingRecord,
+  type CafeSettings,
+  type Locale,
+} from "@saffron/shared";
 import { Link, useRouter } from "@/i18n/navigation";
 import { LineSummary, TotalsSummary } from "@/components/checkout/line-summary";
 import { DemoPayment } from "@/components/payment/demo-payment";
 import { OptionCard } from "@/components/ui/form";
+import { apiFetch, USE_API } from "@/lib/api";
+import { useApiErrorMessage } from "@/lib/use-api-error";
 import { useStoresHydrated } from "@/lib/use-hydrated";
 import { useRecords } from "@/store/records";
 
@@ -25,9 +38,68 @@ export function ReviewBooking({ settings }: { settings: CafeSettings }) {
   const [method, setMethod] = useState<"online" | "atCafe">("online");
   const [paying, setPaying] = useState(false);
   const [doneId, setDoneId] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  // API mode: the booking is saved before the demo payment. If the payment screen is
+  // closed, the table stays booked and the pre-order is paid at the café.
+  const [pending, setPending] = useState<{ id: string; token: string } | null>(null);
+  const apiErrorMessage = useApiErrorMessage();
 
   const subtotal = draft ? priceLines(draft.preorder, demoMenu).reduce((s, l) => s + l.lineTotal, 0) : 0;
   const totals = subtotal > 0 ? computeTotals(subtotal, settings) : null;
+
+  const done = useCallback(
+    (id: string, token?: string) => {
+      setDoneId(id);
+      setDraft(null);
+      router.replace({ pathname: "/booking", query: token ? { id, token } : { id } });
+    },
+    [setDraft, router],
+  );
+
+  /** API mode: the server checks the slot still has room and prices the pre-order. */
+  async function book() {
+    if (!draft) return;
+    setSubmitting(true);
+    setApiError(null);
+    try {
+      const online = !!totals && method === "online";
+      const { booking, token } = await apiFetch<{ booking: BookingRecord; token: string }>("/reservations", {
+        method: "POST",
+        body: {
+          locale,
+          date: draft.date,
+          period: draft.period,
+          time: draft.time,
+          party: draft.party,
+          cuisines: draft.cuisines,
+          diet: draft.diet,
+          preorder: draft.preorder.map(({ slug, qty, variant, addOns }) => ({ slug, qty, variant, addOns: addOns?.length ? addOns : undefined })),
+          customer: draft.customer,
+          notes: draft.notes,
+          paymentMethod: online ? "online" : "atCafe",
+        },
+      });
+      if (online) {
+        setPending({ id: booking.id, token });
+        setPaying(true);
+      } else done(booking.id, token);
+    } catch (err) {
+      setApiError(apiErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function payPending() {
+    if (!pending) return;
+    try {
+      await apiFetch(`/reservations/${pending.id}/demo-payment`, { method: "POST", body: { token: pending.token } });
+    } finally {
+      // Paid or not, the table is booked; the booking page shows how the pre-order is paid.
+      done(pending.id, pending.token);
+    }
+  }
 
   const finish = useCallback(
     (paid: boolean) => {
@@ -40,11 +112,9 @@ export function ReviewBooking({ settings }: { settings: CafeSettings }) {
         preorderTotals: totals,
         payment: { method: totals && method === "online" ? "online" : "atCafe", status: paid ? "paid" : "pending" },
       });
-      setDoneId(id);
-      setDraft(null);
-      router.replace({ pathname: "/booking", query: { id } });
+      done(id);
     },
-    [draft, totals, method, saveBooking, setDraft, router],
+    [draft, totals, method, saveBooking, done],
   );
 
   if (!hydrated || doneId)
@@ -128,17 +198,33 @@ export function ReviewBooking({ settings }: { settings: CafeSettings }) {
           ) : (
             <p className="text-roast-soft">{t("nothingToPay")}</p>
           )}
+          {apiError && (
+            <p role="alert" className="mt-5 rounded-xl bg-chili/10 px-3 py-2 text-sm text-chili">
+              {apiError}
+            </p>
+          )}
           <button
             type="button"
-            onClick={() => (totals && method === "online" ? setPaying(true) : finish(false))}
-            className="btn btn-primary mt-5 w-full cursor-pointer"
+            disabled={submitting}
+            onClick={() => (USE_API ? void book() : totals && method === "online" ? setPaying(true) : finish(false))}
+            className="btn btn-primary mt-5 w-full cursor-pointer disabled:cursor-wait disabled:opacity-70"
           >
             {totals && method === "online" ? t("confirmPay", { amount: formatPrice(totals.total, locale) }) : t("confirm")}
           </button>
         </div>
       </aside>
 
-      {totals && <DemoPayment amount={totals.total} open={paying} onClose={() => setPaying(false)} onPaid={() => finish(true)} />}
+      {totals && (
+        <DemoPayment
+          amount={totals.total}
+          open={paying}
+          onClose={() => {
+            setPaying(false);
+            if (pending) done(pending.id, pending.token);
+          }}
+          onPaid={() => (USE_API ? void payPending() : finish(true))}
+        />
+      )}
     </div>
   );
 }

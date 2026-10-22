@@ -2,9 +2,12 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { CalendarCheck, LoaderCircle } from "lucide-react";
-import { formatClock, formatDate, formatPrice, type Locale } from "@saffron/shared";
+import { formatClock, formatDate, formatPrice, type BookingRecord, type Locale } from "@saffron/shared";
 import { Link } from "@/i18n/navigation";
 import { LineSummary } from "@/components/checkout/line-summary";
+import { USE_API } from "@/lib/api";
+import { useApiRecord } from "@/lib/use-api-record";
+import { useApiErrorMessage } from "@/lib/use-api-error";
 import { useStoresHydrated } from "@/lib/use-hydrated";
 import { useQueryParam } from "@/lib/use-query-param";
 import { useRecords } from "@/store/records";
@@ -18,10 +21,14 @@ export function BookingView() {
   const tfe = useTranslations("featured");
   const locale = useLocale() as Locale;
   const id = useQueryParam("id") ?? "";
+  const token = useQueryParam("token") ?? "";
+  const apiErrorMessage = useApiErrorMessage();
   const hydrated = useStoresHydrated();
-  const booking = useRecords((s) => s.bookings[id]);
+  const saved = useRecords((s) => s.bookings[id]);
+  const remote = useApiRecord<{ booking: BookingRecord }>(USE_API && id ? `/reservations/${encodeURIComponent(id)}?token=${encodeURIComponent(token)}` : null);
+  const booking = USE_API ? (remote.state === "ready" ? remote.data.booking : undefined) : saved;
 
-  if (!hydrated)
+  if (USE_API ? id && remote.state === "loading" : !hydrated)
     return (
       <div className="flex justify-center py-24" role="status">
         <LoaderCircle className="size-8 animate-spin text-kulhad" aria-hidden="true" />
@@ -31,7 +38,7 @@ export function BookingView() {
   if (!booking)
     return (
       <div className="container-page py-20">
-        <p className="max-w-xl text-lg">{t("notFound")}</p>
+        <p className="max-w-xl text-lg">{remote.state === "error" ? apiErrorMessage(remote.error) : USE_API ? t("notFoundLink") : t("notFound")}</p>
         <Link href="/reserve" className="btn btn-primary mt-6">
           {t("another")}
         </Link>
@@ -86,7 +93,7 @@ export function BookingView() {
         </dl>
       </section>
 
-      <p className="mt-6 max-w-2xl text-sm text-roast-soft">{t("demoNote")}</p>
+      <p className="mt-6 max-w-2xl text-sm text-roast-soft">{USE_API ? t("savedNote") : t("demoNote")}</p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Link href="/menu" className="btn btn-primary">
           {tfe("fullMenu")}

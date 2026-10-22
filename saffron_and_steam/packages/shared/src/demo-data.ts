@@ -23,6 +23,8 @@ export const demoSettings: CafeSettings = {
     te: "123 డెమో స్ట్రీట్, డెమో నగర్, ముంబై 400050",
   },
   phone: "+91 22 0000 0000",
+  // The owner's real WhatsApp number: the chatbot's WhatsApp button opens a chat with it.
+  whatsapp: "919355757056",
   email: "hello@saffronandsteam.example",
   timezone: "Asia/Kolkata",
   openingHours: { start: "07:00", end: "23:00" },

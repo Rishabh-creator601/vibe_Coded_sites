@@ -44,24 +44,42 @@
 
 ---
 
+## ⚠️ API key not included
+
+This repo does **not** ship a Gemini API key (or any other secret). The real `.env` files are gitignored, so after cloning **you have to add your own key** — without it, the one-line meal parsing (`/api/foods/parse`) fails with `GEMINI_API_KEY is not configured`. Get a free key at [Google AI Studio](https://aistudio.google.com/apikey) and put it in `.env` (see [Environment variables](#-environment-variables)). You also need your own `MONGO_URI` and `JWT_SECRET`.
+
+---
+
 ## 🚀 Quick start (local)
 
 > **Prerequisites:** Node.js 18+ and a MongoDB you can reach (local `mongodb://127.0.0.1:27017` or an Atlas URI).
 
+**1. Create the env files** (one time):
+
 ```bash
-# 1. Backend
+cp .env.example .env                 # add your GEMINI_API_KEY
+cp server/.env.example server/.env   # add MONGO_URI and JWT_SECRET
+```
+
+**2. Start the app**
+
+**Windows:** double-click **`start.bat`** (or run it from a terminal). The first time, it installs the `server` and `client` dependencies. Then it opens two windows, one for the API (port 5000) and one for the client (port 5173).
+
+**Any OS, by hand:**
+
+```bash
+# Backend
 cd server
 npm install
-cp .env.example .env        # then fill in MONGO_URI, JWT_SECRET
 npm run dev                 # → http://localhost:5000
 
-# 2. Frontend (new terminal)
+# Frontend (new terminal)
 cd client
 npm install
 npm run dev                 # → http://localhost:5173
 ```
 
-The Vite dev server proxies `/api` to the backend on port 5000 — just open **http://localhost:5173**.
+**3. Open http://localhost:5173.** The Vite dev server forwards `/api` to the backend on port 5000.
 
 ---
 

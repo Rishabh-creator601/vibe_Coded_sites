@@ -28,7 +28,7 @@ import { Chip, describedBy, Field, inputClass } from "@/components/ui/form";
 import { QtyStepper } from "@/components/ui/qty-stepper";
 import { useCafeNow } from "@/lib/use-cafe-now";
 import { useStoresHydrated } from "@/lib/use-hydrated";
-import { isEmail, normalisePhone } from "@/lib/validate";
+import { isEmail, normalisePhone } from "@saffron/shared";
 import { useRecords, type BookingDraft, type DietPreference } from "@/store/records";
 
 const PERIODS: MealPeriodKey[] = ["breakfast", "lunch", "dinner"];

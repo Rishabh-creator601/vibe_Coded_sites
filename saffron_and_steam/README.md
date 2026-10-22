@@ -19,7 +19,11 @@ A demo website for a **fictional** café: breakfast, lunch and dinner, plus tea 
 
 ## Run it
 
-Needs Node.js 20 or later.
+Needs Node.js 20 or later. No API keys or `.env` file are needed: the site runs fully on sample data.
+
+**Windows:** double-click **`start.bat`** (or run it from a terminal). The first time, it runs `npm install`. Then it opens the web app in its own window. Open **http://localhost:3000**.
+
+**Any OS, by hand** (from this folder):
 
 ```bash
 npm install
