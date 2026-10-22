@@ -1,0 +1,79 @@
+title :  Calorie tracking APP 
+
+
+
+context :  plan out a calorie tracker app , where you track calories , carbs , protein,and serving size 
+
+# Tech Stack we will use 
+
+-  React and redux 
+-  express 
+-  node js 
+- Mongo DB
+
+
+# rules 
+
+1)  dont ask questions most of the things is allowed if its related to project and under tech stack 
+only ask if it requires special permission for something deep in pc 
+
+
+# these commands are done ignore it 
+
+# IGNORED COMMANDS 
+1)  it is a day wise calorie tracking 
+2)  dark and light mode must be there , deafualt is dark and blue shades with combo of reds 
+3)  target calorie count based on Gender , height and current weight and whether the person is
+veg or non veg  ask it during the account app 
+
+4)  Unique ID and other info of the user should be saved in db 
+5)  calorie tracking to be done meal wise like breakfast , dinner or lunch and snack wise too /
+
+
+
+
+6)  the user not need to add the carbs , protein and other things manually , the search bar will automatically 
+search the food get the required nutritonal value and add it under meal , if the meal is not found 
+then just searc the web for it using the /search-web skill 
+7)  the  name of application is KALORIE 
+
+8)  before logging in there must be a landing page of KALORIE , if user has already logged in then no landing page 
+else there is Landing page of Calgary tracking app where in the navigation bar there are:
+- Fitness images 
+- Manuals
+- Reviews
+- FAQ
+- About Us
+
+
+9)  The footer section has:
+- a contact number
+- Telegram
+- Instagram
+- GitHub
+- a general phone number with Email ID
+
+
+10)  The About Us page has a contact form, dead cat's name, phone number, and query. 
+
+
+11) The user has options for:
+- log out
+- profile picture
+- settings That includes change of user name and details like gender, height, and weight. 
+
+12)  use gemini api key in .env and use it in background to get nutrition values for food not found 
+
+13)  take country as user info while logging in and while searcing food by user offer country focused food 
+
+14)  dont have entry search wise , the user will enter it in one single line : 
+    for ex :  2 roti +  mango shake +  tea so extract and log items and their nutritional value there 
+    for measuring things like sabzi take standards values 
+
+
+15)  extracting foods show in inspect section of console log 
+16)  the progress bar be in circle and coloured when reaching goal and percentage be show b/w the circle 
+at the centre with colour changing as per the goal reached ranging from light red : lowest to light green top (around 98%+ )
+
+
+#FOLLOW UP HERE 

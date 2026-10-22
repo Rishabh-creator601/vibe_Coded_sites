@@ -1,0 +1,27 @@
+// Common countries for the signup/settings selector. India is the default
+// since the app's food estimates (roti, sabzi, etc.) are tuned for it.
+export const COUNTRIES = [
+  'India',
+  'United States',
+  'United Kingdom',
+  'Canada',
+  'Australia',
+  'United Arab Emirates',
+  'Singapore',
+  'Pakistan',
+  'Bangladesh',
+  'Sri Lanka',
+  'Nepal',
+  'Germany',
+  'France',
+  'Italy',
+  'Spain',
+  'Japan',
+  'China',
+  'South Korea',
+  'Mexico',
+  'Brazil',
+  'South Africa',
+  'Nigeria',
+  'Other',
+];

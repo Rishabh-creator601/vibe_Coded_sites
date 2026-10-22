@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Secrets — never commit real env files
+.env
+.env.*
+!.env.example
+*/.env
+*/.env.*
+!*/.env.example
+
+# Build output
+dist/
+client/dist/
+
+# Vercel
+.vercel/
+
+# Local editor / tooling
+.claude/settings.local.json
+
+# Logs / misc
+*.log
+npm-debug.log*
+.DS_Store
