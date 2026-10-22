@@ -1,0 +1,19 @@
+{
+  "name": "saffron-and-steam",
+  "private": true,
+  "description": "Saffron & Steam: demo café website (Next.js + Express + MongoDB)",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w web",
+    "dev:api": "npm run dev -w api",
+    "build": "npm run build -w web",
+    "lint": "npm run lint -w web",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

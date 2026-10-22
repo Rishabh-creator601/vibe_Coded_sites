@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+/*
+  Saffron & Steam design tokens.
+  Cream is milky chai, roast is the coffee bean, kulhad is the clay chai cup,
+  saffron marks "now". The three meal colours run from morning light (breakfast)
+  through noon (lunch) to evening clay (dinner).
+*/
+@theme {
+  --color-cream: #f5e9d7;
+  --color-paper: #fbf5ec;
+  --color-line: #e2cfb6;
+  --color-roast: #2a1a12;
+  --color-roast-soft: #6b5546;
+  --color-kulhad: #9e4325;
+  --color-kulhad-deep: #7e3319;
+  --color-saffron: #e8a317;
+  --color-saffron-soft: #f3d38a;
+  --color-leaf: #2e7d32;
+  --color-chili: #b3261e;
+  --color-yolk: #b86e00;
+
+  --font-display: var(--font-display-locale), Georgia, serif;
+  --font-sans: var(--font-body-locale), system-ui, sans-serif;
+
+  --radius-photo: 1.75rem;
+
+  --animate-steam: steam 3.2s ease-in-out infinite;
+
+  @keyframes steam {
+    0% {
+      transform: translateY(4px) scaleY(0.9);
+      opacity: 0;
+    }
+    35% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(-10px) scaleY(1.1);
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-cream);
+    color: var(--color-roast);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    /* A faint paper grain, drawn once as SVG noise. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.10 0 0 0 0 0.07 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  /* Indic scripts sit taller than Latin; give them more line height. */
+  :lang(hi),
+  :lang(mr),
+  :lang(bn),
+  :lang(te) {
+    line-height: 1.75;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-saffron);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-saffron-soft);
+  }
+
+  dialog::backdrop {
+    background: rgb(42 26 18 / 0.45);
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      border-color 180ms ease;
+  }
+  .btn-primary {
+    background: var(--color-kulhad);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--color-kulhad-deep);
+  }
+  .btn-outline {
+    border: 1.5px solid var(--color-roast);
+    color: var(--color-roast);
+  }
+  .btn-outline:hover {
+    background: var(--color-roast);
+    color: var(--color-cream);
+  }
+
+  .link-underline {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.25em;
+    text-decoration-color: var(--color-kulhad);
+    font-weight: 600;
+  }
+  .link-underline:hover {
+    color: var(--color-kulhad);
+  }
+
+  /* Dotted leader between a dish name and its price, as on a printed menu card. */
+  .leader {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 2px dotted var(--color-line);
+    transform: translateY(-0.35em);
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

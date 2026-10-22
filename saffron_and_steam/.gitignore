@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets: you create these yourself, never commit them
+.env
+.env.*
+!.env.example
+
+.DS_Store
+npm-debug.log*
