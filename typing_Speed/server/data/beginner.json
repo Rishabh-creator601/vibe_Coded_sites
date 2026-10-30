@@ -1,0 +1,9 @@
+{
+  "stages": {
+    "1a": { "label": "Home row", "keys": "asdfjkl;" },
+    "1b": { "label": "Home + top row", "keys": "asdfjkl;qwertyuiop" },
+    "1c": { "label": "Home + top + bottom row", "keys": "asdfjkl;qwertyuiopzxcvbnm,." },
+    "1d": { "label": "All letters", "keys": "abcdefghijklmnopqrstuvwxyz" }
+  },
+  "default": "1d"
+}

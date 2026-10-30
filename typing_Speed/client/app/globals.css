@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="dark"] {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --border: #262a33;
+  --key-edge: #07080a;
+  --muted: #5c6370;
+  --text: #e6e6e6;
+  --sub: #9aa1ad;
+  --error: #ef4444;
+  --error-dark: #a63232;
+  --accent: #f5c542;
+  --accent-ink: #0f1115;
+  --typing-size: 24px;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #eceff3;
+  --panel: #f9fafb;
+  --border: #cfd5dd;
+  --key-edge: #aab2bd;
+  --muted: #6b7280;
+  --text: #14181f;
+  --sub: #4b5563;
+  --error: #dc2626;
+  --error-dark: #991b1b;
+  --accent: #a16207;
+  --accent-ink: #ffffff;
+  color-scheme: light;
+}
+
+[data-font="sm"] { --typing-size: 20px; }
+[data-font="md"] { --typing-size: 24px; }
+[data-font="lg"] { --typing-size: 30px; }
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-line: var(--border);
+  --color-muted: var(--muted);
+  --color-fg: var(--text);
+  --color-sub: var(--sub);
+  --color-err: var(--error);
+  --color-err-dark: var(--error-dark);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-code), ui-monospace, Consolas, monospace;
+}
+
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100dvh;
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* the nav and footer step back while a run is in progress */
+.chrome { transition: opacity 0.4s; }
+[data-typing="true"] .chrome { opacity: 0.2; }
+[data-typing="true"] .chrome:hover, [data-typing="true"] .chrome:focus-within { opacity: 1; }
+
+/* keycap: the level choice and the primary button */
+.keycap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-bottom: 5px solid var(--key-edge);
+  border-radius: 12px;
+  transition: transform 0.08s, border-bottom-width 0.08s, border-color 0.15s;
+}
+a.keycap:hover, button.keycap:hover:not(:disabled) { border-color: var(--accent); }
+a.keycap:active, button.keycap:active:not(:disabled) { transform: translateY(3px); border-bottom-width: 2px; }
+.keycap[aria-disabled="true"] { opacity: 0.45; }
+
+.caret {
+  position: absolute;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  transition: left 0.09s ease-out, top 0.09s ease-out;
+}
+.caret.idle { animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .caret { transition: none; }
+  .caret.idle { animation: none; }
+  .keycap { transition: none; }
+}

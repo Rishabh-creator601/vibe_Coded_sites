@@ -1,0 +1,96 @@
+[
+  {
+    "id": "js001",
+    "title": "Sum an array",
+    "lines": [
+      "function sum(nums) {",
+      "  return nums.reduce((a, b) => a + b, 0);",
+      "}"
+    ]
+  },
+  {
+    "id": "js002",
+    "title": "Find the largest",
+    "lines": [
+      "const max = (list) => {",
+      "  let best = list[0];",
+      "  for (const n of list) {",
+      "    if (n > best) best = n;",
+      "  }",
+      "  return best;",
+      "};"
+    ]
+  },
+  {
+    "id": "js003",
+    "title": "Count words",
+    "lines": [
+      "function countWords(text) {",
+      "  const counts = {};",
+      "  for (const w of text.split(' ')) {",
+      "    counts[w] = (counts[w] || 0) + 1;",
+      "  }",
+      "  return counts;",
+      "}"
+    ]
+  },
+  {
+    "id": "js004",
+    "title": "Fetch JSON",
+    "lines": [
+      "async function getUser(id) {",
+      "  const res = await fetch(`/api/users/${id}`);",
+      "  if (!res.ok) throw new Error('Not found');",
+      "  return res.json();",
+      "}"
+    ]
+  },
+  {
+    "id": "js005",
+    "title": "Debounce",
+    "lines": [
+      "function debounce(fn, ms) {",
+      "  let timer;",
+      "  return (...args) => {",
+      "    clearTimeout(timer);",
+      "    timer = setTimeout(() => fn(...args), ms);",
+      "  };",
+      "}"
+    ]
+  },
+  {
+    "id": "js006",
+    "title": "Palindrome check",
+    "lines": [
+      "const isPalindrome = (s) => {",
+      "  const clean = s.toLowerCase().replace(/[^a-z]/g, '');",
+      "  return clean === clean.split('').reverse().join('');",
+      "};"
+    ]
+  },
+  {
+    "id": "js007",
+    "title": "Class with a method",
+    "lines": [
+      "class Counter {",
+      "  constructor() {",
+      "    this.value = 0;",
+      "  }",
+      "  increment() {",
+      "    this.value += 1;",
+      "    return this;",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "js008",
+    "title": "Filter and map",
+    "lines": [
+      "const names = users",
+      "  .filter((u) => u.active && u.age >= 18)",
+      "  .map((u) => u.name.trim())",
+      "  .sort();"
+    ]
+  }
+]
