@@ -1,0 +1,21 @@
+# Render blueprint for the Express API. The client is deployed separately on Vercel
+# (project root: typing_Speed/client). See the "Deploying" section in README.md.
+services:
+  - type: web
+    name: keystone-api
+    runtime: node
+    rootDir: typing_Speed
+    buildCommand: npm --prefix server install
+    startCommand: npm --prefix server start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI # MongoDB Atlas connection string
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_URL # the Vercel site, e.g. https://keystone-typing-speed.vercel.app
+        value: https://keystone-typing-speed.vercel.app
