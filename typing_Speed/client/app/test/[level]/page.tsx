@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import TestRunner from "@/components/typing/TestRunner";
+import RequireLogin from "@/components/ui/RequireLogin";
 import { getLevel } from "../../../../shared/levels.js";
 
 export async function generateMetadata({ params }: { params: Promise<{ level: string }> }): Promise<Metadata> {
@@ -15,7 +16,9 @@ export default async function TestLevelPage({ params }: { params: Promise<{ leve
   return (
     <div className="pt-6">
       <h1 className="mb-6 text-4xl font-bold tracking-tight">Test: {info.name}</h1>
-      <TestRunner key={level} levelId={level} />
+      <RequireLogin>
+        <TestRunner key={level} levelId={level} />
+      </RequireLogin>
     </div>
   );
 }

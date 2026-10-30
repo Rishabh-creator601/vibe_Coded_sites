@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { get } from "@/lib/api";
 import { durationLabel, formatTotalTime, optionLabel, round1, shortDate, wpm } from "@/lib/format";
@@ -40,6 +41,7 @@ function Figure({ value, label }: { value: string; label: string }) {
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
+  const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
   const [days, setDays] = useState("30");
   const [progress, setProgress] = useState<{ date: string; netWpm: number }[]>([]);
@@ -66,6 +68,10 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user) get<typeof history>(`/users/me/history?page=${page}&limit=10${type !== "all" ? `&type=${type}` : ""}`).then(setHistory).catch(() => {});
   }, [user, type, page]);
+
+  useEffect(() => {
+    if (!loading && !user) router.replace("/login?next=/dashboard");
+  }, [loading, user, router]);
 
   if (loading || !user) return null;
   if (error) return <p className="pt-6 text-err">{error}</p>;
