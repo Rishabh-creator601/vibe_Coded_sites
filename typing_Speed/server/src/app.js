@@ -16,8 +16,11 @@ import leaderboard from "./routes/leaderboard.js";
 // On serverless hosts nothing calls mongoose.connect() up front, so connect on first use and
 // reuse the connection between invocations. Locally index.js has already connected (readyState 1).
 let connecting = null;
-async function ensureDb(_req, _res, next) {
-  if (mongoose.connection.readyState === 1) return next();
+// Guest practice text is generated from static data, so those routes don't need the database.
+const NO_DB = /^\/practice\/(drill$|[a-z]+\/(text|wordbank)$)/;
+
+async function ensureDb(req, _res, next) {
+  if (mongoose.connection.readyState === 1 || (req.method === "GET" && NO_DB.test(req.path))) return next();
   try {
     connecting ??= mongoose.connect(config.mongoUri, { bufferCommands: false, serverSelectionTimeoutMS: 8000 });
     await connecting;
