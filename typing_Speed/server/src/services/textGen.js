@@ -1,16 +1,17 @@
 // Text generation for every level (see docs/LEVELS.md). Seeded, so a given seed always gives the same text.
-import { readFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
+// Static JSON imports (not readFileSync) so serverless bundlers always include the data files.
+import WORDS_200 from "../../data/words-200.json" with { type: "json" };
+import WORDS_1000 from "../../data/words-1000.json" with { type: "json" };
+import SENTENCES from "../../data/sentences.json" with { type: "json" };
+import RAW_PASSAGES from "../../data/passages.json" with { type: "json" };
+import NUMBERS from "../../data/numbers.json" with { type: "json" };
+import BEGINNER from "../../data/beginner.json" with { type: "json" };
+import CODE_JS from "../../data/code/js.json" with { type: "json" };
+import CODE_PYTHON from "../../data/code/python.json" with { type: "json" };
 
-const load = (file) => JSON.parse(readFileSync(new URL(`../../data/${file}`, import.meta.url), "utf8"));
-
-const WORDS_200 = load("words-200.json");
-const WORDS_1000 = load("words-1000.json");
-const SENTENCES = load("sentences.json");
-const PASSAGES = load("passages.json").map((p) => ({ ...p, words: p.text.split(" ").length }));
-const NUMBERS = load("numbers.json");
-const BEGINNER = load("beginner.json");
-const CODE = { js: load("code/js.json"), python: load("code/python.json") };
+const PASSAGES = RAW_PASSAGES.map((p) => ({ ...p, words: p.text.split(" ").length }));
+const CODE = { js: CODE_JS, python: CODE_PYTHON };
 
 const CONTRACTIONS = ["don't", "it's", "I'm", "can't", "won't", "that's", "they're", "we're", "you're", "didn't", "isn't", "let's"];
 
