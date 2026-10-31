@@ -1,11 +1,10 @@
-# Vibe coded sites 
+# Vibe coded sites
 
-
-
-| Website Name     | Type | Api key needed  | Remakrs | 
-| -------- | ------- | ------ | -----
-| Kalorie  | calorie tracking app    | yes |  - |
-| Safron and Steam | A restuarant and cafe needed     | Yes  | Under construction |
+| Website | Type | Keys needed | Live | Remarks |
+| --- | --- | --- | --- | --- |
+| [Kalorie](Kalorie/README.md) | Calorie tracking app | Yes: Gemini API key, MongoDB URI, JWT secret | - | - |
+| [Saffron & Steam](saffron_and_steam/README.md) | Restaurant and café site | No (runs on sample data) | - | Under construction: the API, payments and emails are not built yet |
+| [Keystone](typing_Speed/README.md) | Typing speed test and practice | Yes: MongoDB URI, JWT secret | [keystone-typing-speed.vercel.app](https://keystone-typing-speed.vercel.app) | Deployed; see its [deploy log](typing_Speed/docs/DEPLOY_LOG.md) for open items |
 
 ## How to start
 
@@ -16,6 +15,4 @@ Each site lives in its own folder and has its own `start.bat` (Windows). The fir
 | Kalorie | [`Kalorie/`](Kalorie/README.md) | `Kalorie\start.bat` | http://localhost:5173 |
 | Saffron & Steam | [`saffron_and_steam/`](saffron_and_steam/README.md) | `saffron_and_steam\start.bat` | http://localhost:3000 |
 
-> **Kalorie needs your own keys.** This repo does not include the Gemini API key, MongoDB URI or JWT secret. Create `Kalorie/.env` and `Kalorie/server/.env` from the `.env.example` files before you start it. See the [Kalorie README](Kalorie/README.md).
 
-For non-Windows steps, see each site's README.
