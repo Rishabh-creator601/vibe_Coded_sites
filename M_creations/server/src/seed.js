@@ -56,7 +56,8 @@ async function seedCategories() {
 }
 
 async function seedSlots() {
-  if (await Product.exists({})) return;
+  // Placeholders are for trying the site locally; the live catalog shows only real pieces.
+  if (config.isProd || (await Product.exists({}))) return;
   const categories = await Category.find({ slug: { $in: Object.keys(SLOTS) } });
   const queues = categories.map((category) => ({ category, slots: [...SLOTS[category.slug]] }));
 

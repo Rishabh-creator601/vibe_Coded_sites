@@ -11,8 +11,10 @@ import { UPLOAD_DIR } from './services/images.js';
 export function createApp() {
   const app = express();
 
-  // The API sits behind the Next.js rewrite (and the host's proxy in production).
-  app.set('trust proxy', 1);
+  // Locally the only proxy is the Next.js rewrite. Live, a request passes through Vercel and then
+  // Render's proxy, so the visitor's address is two hops back. Trusting only one hop would make
+  // every visitor look like Vercel and share one login rate limit.
+  app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS) || 1);
   app.use(helmet());
   app.use(express.json({ limit: '100kb' }));
   app.use(cookieParser());
