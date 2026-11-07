@@ -6,6 +6,8 @@ has its own layout, type, photo treatment and animation, plus its own light and 
 Built with Next.js, Framer Motion, Express, Node.js and MongoDB. See [PLAN.md](PLAN.md) for the
 design plan and tokens.
 
+**Live site:** https://odd-hour-themes.vercel.app
+
 ## Run it
 
 You need Node 20.12 or newer and MongoDB running locally.
@@ -87,6 +89,65 @@ The list shows saved screenshots, not live pages, so it does not change when a t
 If MongoDB is unreachable, the page still loads from `content.json`, the bag count is hidden, and
 the form says reservations are offline. The API reconnects by itself. If the API itself is down,
 the website shows a page explaining that.
+
+## Deployment
+
+The site runs on three free services. Each part redeploys by itself when you push to `master`.
+
+| Part | Host | Address |
+| --- | --- | --- |
+| Website | Vercel, project `odd-hour-themes` | https://odd-hour-themes.vercel.app |
+| API | Render, web service `odd-hour-api` | https://odd-hour-api.onrender.com |
+| Database | MongoDB Atlas, database `odd-hour` | Private, reached only by the API |
+
+```
+Visitor ──> Vercel (website) ──/api──> Render (API) ──> MongoDB Atlas
+```
+
+### Website on Vercel
+
+| Setting | Value |
+| --- | --- |
+| Root Directory | `themes/client` |
+| Framework | Next.js, with the default build and install commands |
+| `API_URL` | `https://odd-hour-api.onrender.com` |
+
+`API_URL` is read when the site builds, so redeploy after changing it.
+
+### API on Render
+
+| Setting | Value |
+| --- | --- |
+| Root Directory | `themes` |
+| Build Command | `npm ci --workspace server` |
+| Start Command | `npm start --workspace server` |
+| Health Check Path | `/api/health` |
+| `MONGODB_URI` | The Atlas connection string, ending in `/odd-hour` |
+| `TRUST_PROXY` | `2`, because visitors arrive through Vercel and then Render |
+
+Render sets `PORT` itself. On the free plan the API sleeps after 15 minutes without visits, so the
+next page load can take up to a minute while it wakes.
+
+### Database on MongoDB Atlas
+
+The `odd-hour` database lives on a free cluster. The API connects as a database user with read and
+write access, and Network Access allows `0.0.0.0/0` because Render's free plan has no fixed address.
+The API fills in the page content by itself the first time it connects.
+
+To check everything is connected, open https://odd-hour-api.onrender.com/api/health. It should
+answer `"database":"connected"`.
+
+### Environment variables
+
+| Variable | Used by | Local default | What it is |
+| --- | --- | --- | --- |
+| `API_URL` | Website | `http://127.0.0.1:4000` | Where the website finds the API |
+| `MONGODB_URI` | API | `mongodb://127.0.0.1:27017/odd-hour` | MongoDB connection string |
+| `TRUST_PROXY` | API | `1` | How many proxies sit in front of the API |
+| `PORT` | API | `4000` | Port the API listens on |
+
+Keep the real `MONGODB_URI` in the Render dashboard only. It contains the database password, so
+never commit it.
 
 ## Adding a theme
 
