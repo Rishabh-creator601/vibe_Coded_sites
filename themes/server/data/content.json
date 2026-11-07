@@ -1,0 +1,133 @@
+{
+  "brand": {
+    "name": "Odd Hour",
+    "fullName": "Odd Hour Coffee Roasters",
+    "city": "Bengaluru",
+    "neighbourhood": "Malleshwaram",
+    "since": 2019,
+    "email": "hello@oddhour.example"
+  },
+  "hero": {
+    "lines": ["Roasted at 4 a.m.", "On your table by Friday."],
+    "lede": "Small-batch Indian coffee from Bengaluru. We roast twelve kilos every Tuesday, before the city wakes up. Reserve a bag from the next one."
+  },
+  "coffees": [
+    {
+      "id": "araku-dawn",
+      "name": "Araku Dawn",
+      "region": "Araku Valley, Andhra Pradesh",
+      "altitude": 1100,
+      "process": "Washed",
+      "roast": 1,
+      "roastName": "Light",
+      "notes": ["Mandarin", "Jaggery", "Cocoa nib"],
+      "price": 720,
+      "image": "black-glass",
+      "description": "Bright and clean. The one to drink black, on its own, while it is still dark outside.",
+      "cupping": { "acidity": 5, "sweetness": 4, "body": 2, "aroma": 4, "finish": 3 }
+    },
+    {
+      "id": "baba-budan",
+      "name": "Baba Budan",
+      "region": "Chikmagalur, Karnataka",
+      "altitude": 1350,
+      "process": "Natural",
+      "roast": 2,
+      "roastName": "Medium-light",
+      "notes": ["Blueberry", "Dates", "Dark honey"],
+      "price": 780,
+      "image": "bean-bowl",
+      "description": "Dried in the fruit, so it tastes like it. Loud, jammy and hard to put down.",
+      "cupping": { "acidity": 3, "sweetness": 5, "body": 3, "aroma": 5, "finish": 4 }
+    },
+    {
+      "id": "nilgiri-mist",
+      "name": "Nilgiri Mist",
+      "region": "The Nilgiris, Tamil Nadu",
+      "altitude": 1500,
+      "process": "Honey",
+      "roast": 3,
+      "roastName": "Medium",
+      "notes": ["Plum", "Black tea", "Brown sugar"],
+      "price": 760,
+      "image": "steam-hand",
+      "description": "Grown between tea gardens and it shows. Gentle enough for a second cup, and a third.",
+      "cupping": { "acidity": 3, "sweetness": 4, "body": 4, "aroma": 3, "finish": 4 }
+    },
+    {
+      "id": "malabar-monsoon",
+      "name": "Malabar Monsoon",
+      "region": "Malabar Coast, Kerala",
+      "altitude": 900,
+      "process": "Monsooned",
+      "roast": 5,
+      "roastName": "Dark",
+      "notes": ["Walnut", "Tobacco", "Dark chocolate"],
+      "price": 640,
+      "image": "dark-splash",
+      "description": "Aged in monsoon winds until the beans swell and the acidity disappears. Built for filter kaapi with milk.",
+      "cupping": { "acidity": 1, "sweetness": 3, "body": 5, "aroma": 4, "finish": 5 }
+    }
+  ],
+  "steps": [
+    {
+      "day": "Tuesday",
+      "time": "4:00 a.m.",
+      "title": "Roast",
+      "body": "Twelve kilos, one coffee at a time, while the street is empty and nobody can smell it."
+    },
+    {
+      "day": "Tuesday",
+      "time": "9:00 a.m.",
+      "title": "Taste",
+      "body": "We cup every batch. Anything that misses its profile becomes staff coffee."
+    },
+    {
+      "day": "Wednesday",
+      "time": "noon",
+      "title": "Pack",
+      "body": "Each bag is sealed by hand, with the roast date printed on the front."
+    },
+    {
+      "day": "Friday",
+      "time": "by evening",
+      "title": "Arrive",
+      "body": "Delivered anywhere in India, rested just enough to brew well the day it lands."
+    }
+  ],
+  "story": {
+    "title": "Why so early",
+    "paragraphs": [
+      "Odd Hour started in 2019 with a one-kilo sample roaster in a Malleshwaram garage. The neighbours complained about the smoke every afternoon.",
+      "So we tried roasting at 4 a.m. Nobody has complained since. We kept the hour, and we kept the batches small enough to taste every one."
+    ],
+    "image": "shop-counter",
+    "imageTwo": "bean-sack"
+  },
+  "grinds": [
+    { "id": "whole", "label": "Whole bean" },
+    { "id": "filter-kaapi", "label": "South Indian filter" },
+    { "id": "pour-over", "label": "Pour-over" },
+    { "id": "espresso", "label": "Espresso" }
+  ],
+  "batch": { "kilos": 12, "bags": 48, "bagGrams": 250 },
+  "photos": {
+    "pour-over": { "src": "/images/pour-over.jpg", "alt": "Coffee dripping through a glass pour-over brewer on a cafe bar", "width": 1600, "height": 1067 },
+    "beans-scatter": { "src": "/images/beans-scatter.jpg", "alt": "Roasted coffee beans scattered on a dark table", "width": 1600, "height": 1067 },
+    "bean-sack": { "src": "/images/bean-sack.jpg", "alt": "A jute sack spilling over with roasted coffee beans", "width": 1600, "height": 1066 },
+    "tool-flatlay": { "src": "/images/tool-flatlay.jpg", "alt": "Espresso tools, ground coffee and a latte laid out on wooden boards", "width": 1600, "height": 1067 },
+    "espresso-glass": { "src": "/images/espresso-glass.jpg", "alt": "A short glass of espresso in morning light with leaf shadows", "width": 1600, "height": 2000 },
+    "black-glass": { "src": "/images/black-glass.jpg", "alt": "Black coffee in a clear glass cup, lit from the side", "width": 1600, "height": 1600 },
+    "steam-hand": { "src": "/images/steam-hand.jpg", "alt": "A hand holding a white cup with steam rising from it", "width": 1600, "height": 2397 },
+    "crema": { "src": "/images/crema.jpg", "alt": "Looking down into a cup of coffee with golden crema", "width": 1600, "height": 2400 },
+    "cup-tray": { "src": "/images/cup-tray.jpg", "alt": "Seven cups of coffee from pale to black, arranged in a ring on a round wooden tray", "width": 1600, "height": 2400 },
+    "bean-bowl": { "src": "/images/bean-bowl.jpg", "alt": "A white bowl filled with glossy roasted coffee beans", "width": 1600, "height": 2133 },
+    "dark-splash": { "src": "/images/dark-splash.jpg", "alt": "Coffee beans falling into a cup against a black background", "width": 1600, "height": 2400 },
+    "portafilter": { "src": "/images/portafilter.jpg", "alt": "Two espresso portafilters seen from above, one with grounds and one with beans", "width": 1600, "height": 2400 },
+    "shop-counter": { "src": "/images/shop-counter.jpg", "alt": "A barista behind a coffee bar with a white brick wall and hanging bulbs", "width": 1600, "height": 900 },
+    "shop-room": { "src": "/images/shop-room.jpg", "alt": "Inside a cafe with long wooden tables and dark green walls", "width": 1600, "height": 1067 },
+    "cup-peach": { "src": "/images/cup-peach.jpg", "alt": "A single small cup of coffee on a plain peach background", "width": 1600, "height": 1069 },
+    "iced": { "src": "/images/iced.jpg", "alt": "Milk swirling through a tall glass of iced coffee", "width": 1600, "height": 1068 },
+    "saucer": { "src": "/images/saucer.jpg", "alt": "Black coffee in a white cup and saucer on a glass table", "width": 1600, "height": 1067 }
+  }
+}

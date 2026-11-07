@@ -1,0 +1,21 @@
+{
+  "name": "odd-hour-themes",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "concurrently -n api,web -c cyan,magenta \"npm run start -w server\" \"npm run start -w client\"",
+    "seed": "npm run seed -w server",
+    "test": "npm test -w server",
+    "previews": "node scripts/capture-previews.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "playwright-core": "^1.50.0"
+  }
+}

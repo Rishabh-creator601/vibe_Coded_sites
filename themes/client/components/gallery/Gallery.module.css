@@ -1,0 +1,543 @@
+.root {
+  --page: #e4f9fc;
+  --ink: #03323b;
+  --soft: #08606d;
+  --cyan: #11c5dc;
+  --panel: #11c5dc;
+  --on-panel: #03323b;
+  --button: #03323b;
+  --on-button: #e4f9fc;
+  --thumb-ring: #03323b;
+  --rule: rgb(3 50 59 / 0.22);
+  --margin: clamp(1rem, 3vw, 2.5rem);
+  --header: 4.5rem;
+
+  min-height: 100vh;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-reading), sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+:global(html[data-mode='dark']) .root {
+  --page: #04262e;
+  --ink: #dffbff;
+  --soft: #9edde7;
+  --cyan: #35e3f7;
+  --panel: #07505e;
+  --on-panel: #dffbff;
+  --button: #35e3f7;
+  --on-button: #03323b;
+  --thumb-ring: #35e3f7;
+  --rule: rgb(223 251 255 / 0.22);
+}
+
+.root :focus-visible {
+  outline: 3px solid var(--focus, var(--ink));
+  outline-offset: 2px;
+}
+
+/* Header */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1rem clamp(1rem, 3vw, 2.5rem);
+  min-height: var(--header);
+  padding: 0.625rem var(--margin);
+  background: var(--page);
+  border-bottom: 1.5px solid var(--rule);
+}
+
+.brand {
+  flex: none;
+  color: inherit;
+  font-family: var(--font-headline), sans-serif;
+  font-size: 1.375rem;
+  font-stretch: 130%;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.nav {
+  flex: 1;
+  min-width: 0;
+}
+
+.navList {
+  display: flex;
+  justify-content: center;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0.125rem;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.navLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navLink:hover:not([aria-current]) {
+  background: var(--rule);
+}
+
+.navPill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--button);
+}
+
+.navText {
+  position: relative;
+}
+
+.navLink[aria-current] {
+  color: var(--on-button);
+  font-weight: 600;
+}
+
+.mode {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.mode:hover {
+  background: var(--button);
+  border-color: var(--button);
+  color: var(--on-button);
+}
+
+/* The featured carousel */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+  margin: clamp(0.75rem, 1.5vw, 1.25rem) var(--margin) 0;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border-radius: 1.75rem;
+  background: var(--panel);
+  color: var(--on-panel);
+  scroll-margin-top: calc(var(--header) + 1rem);
+  --focus: var(--on-panel);
+}
+
+.heroIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: 100%;
+}
+
+/* The reading text sits at the foot of the panel, level with the thumbnails. */
+.lede {
+  margin-top: auto;
+}
+
+.title {
+  font-family: var(--font-headline), sans-serif;
+  font-size: clamp(2.625rem, 5.5vw, 5.75rem);
+  font-stretch: 100%;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 30rem;
+  font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+  line-height: 1.4;
+}
+
+.hint {
+  max-width: 28rem;
+  padding-top: 0.875rem;
+  border-top: 1.5px solid currentColor;
+  font-weight: 500;
+}
+
+.stage {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.print {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--page);
+  isolation: isolate;
+}
+
+.printLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.print img,
+.cardShot img,
+.thumb img {
+  object-fit: cover;
+  object-position: top;
+}
+
+/* The wash a print develops out of */
+.develop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--cyan);
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+
+.shotDark {
+  display: none;
+}
+
+:global(html[data-mode='dark']) .shotLight {
+  display: none;
+}
+
+:global(html[data-mode='dark']) .shotDark {
+  display: block;
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.captionText {
+  min-width: 0;
+}
+
+.captionCount {
+  font-weight: 500;
+}
+
+.captionName {
+  font-size: clamp(1.875rem, 3.4vw, 3.25rem);
+  line-height: 1.1;
+}
+
+.captionName[data-slug='departures'] {
+  font-stretch: 125%;
+  font-weight: 900;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.round,
+.roundQuiet {
+  display: grid;
+  place-items: center;
+  width: 2.875rem;
+  height: 2.875rem;
+  padding: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.round:hover,
+.roundQuiet:hover:not(:disabled) {
+  background: var(--button);
+  border-color: var(--button);
+  color: var(--on-button);
+}
+
+.round:active,
+.roundQuiet:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.roundQuiet:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.open {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.875rem;
+  padding: 0 1.375rem;
+  border-radius: 999px;
+  background: var(--button);
+  color: var(--on-button);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.open:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0.3125rem;
+  background: var(--page);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.thumb:hover {
+  transform: translateY(-3px);
+}
+
+.thumb[aria-current] {
+  outline: 3px solid var(--thumb-ring);
+  outline-offset: 1px;
+}
+
+/* Category carousels */
+
+.category {
+  padding-top: clamp(2.5rem, 5vw, 4.5rem);
+  scroll-margin-top: var(--header);
+}
+
+.category:last-child {
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.categoryHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-inline: var(--margin);
+}
+
+.categoryHead .controls {
+  flex: none;
+  flex-wrap: nowrap;
+}
+
+.categoryName {
+  font-family: var(--font-headline), sans-serif;
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  font-stretch: 112%;
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.categoryNote {
+  margin-top: 0.25rem;
+  color: var(--soft);
+}
+
+.row {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0.25rem var(--margin) 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--margin);
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 clamp(17rem, 50vw, 46rem);
+  scroll-snap-align: start;
+}
+
+.cardLink {
+  display: block;
+  border-radius: 0.875rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardShot {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  outline: 1.5px solid var(--rule);
+  outline-offset: -1.5px;
+  transition: outline-color 0.15s ease;
+}
+
+.cardLink:hover .cardShot {
+  outline: 4px solid var(--cyan);
+  outline-offset: -4px;
+}
+
+.cardShot img {
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.cardLink:hover .cardShot img {
+  transform: scale(1.025);
+}
+
+.cardText {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 1rem;
+  padding-top: 0.75rem;
+}
+
+.cardName {
+  font-family: var(--font-headline), sans-serif;
+  font-size: clamp(1.25rem, 1.9vw, 1.625rem);
+  font-stretch: 110%;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.cardNumber {
+  color: var(--soft);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cardBlurb {
+  grid-column: 1 / -1;
+  color: var(--soft);
+}
+
+@media (max-width: 62rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroIntro {
+    height: auto;
+  }
+
+  .lede {
+    margin-top: 0;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    --header: 7.5rem;
+  }
+
+  .brand {
+    margin-right: auto;
+  }
+
+  .nav {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .navList {
+    justify-content: flex-start;
+  }
+
+  .hero,
+  .category {
+    scroll-margin-top: 7.5rem;
+  }
+
+  /* Ten thumbnails need more room than a phone has, so the strip scrolls. */
+  .strip {
+    grid-template-columns: repeat(10, 5rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .card {
+    flex-basis: 84vw;
+  }
+
+  .row {
+    gap: 0.875rem;
+  }
+
+  .open {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardShot img,
+  .thumb {
+    transition: none;
+  }
+
+  .thumb:hover {
+    transform: none;
+  }
+
+  .cardLink:hover .cardShot img {
+    transform: none;
+  }
+}

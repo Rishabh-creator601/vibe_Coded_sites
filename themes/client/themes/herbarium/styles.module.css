@@ -1,0 +1,932 @@
+/* Pressed coffee on celadon sheets. Latin and headings in italic Cormorant; everything else plain sans. */
+
+.root {
+  --bg: #dce6d2;
+  --text: #1e3a2a;
+  --accent: #b3123a;
+  --on-accent: #fff4f2;
+  --second: #6d8a6f;
+  --sheet: #eef3e6;
+  --sheet-edge: #c6d3bb;
+  --strap: #f8f6e6;
+  --strap-line: rgb(30 58 42 / 0.22);
+  --rule: rgb(30 58 42 / 0.32);
+  --leaf: #3f6248;
+  --leaf-pale: #5d7f63;
+  --vein: rgb(236 244 226 / 0.5);
+  --stem: #4e3f2c;
+  --unripe: #8fa763;
+  --shine: rgb(255 255 255 / 0.6);
+  --error: #96102f;
+
+  --dock-bg: #1e3a2a;
+  --dock-fg: #eef3e6;
+  --dock-accent: #f0527a;
+  --dock-on-accent: #10261c;
+  --dock-radius: 0.125rem;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), 'Gill Sans', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+:global(html[data-mode='dark']) .root {
+  --bg: #10261c;
+  --text: #dde8d2;
+  --accent: #f0527a;
+  --on-accent: #10261c;
+  --second: #8fb08f;
+  --sheet: #1a3628;
+  --sheet-edge: #0a1a13;
+  --strap: #3c5a48;
+  --strap-line: rgb(221 232 210 / 0.25);
+  --rule: rgb(221 232 210 / 0.35);
+  --leaf: #79a083;
+  --leaf-pale: #9dbf9f;
+  --vein: rgb(16 38 28 / 0.5);
+  --stem: #c9b48a;
+  --unripe: #c0cf85;
+  --shine: rgb(255 255 255 / 0.55);
+  --error: #ff9db4;
+
+  --dock-bg: #1a3628;
+  --dock-fg: #dde8d2;
+  --dock-accent: #f0527a;
+  --dock-on-accent: #10261c;
+}
+
+.root a {
+  color: inherit;
+}
+
+.root :focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.root img {
+  object-fit: cover;
+  filter: saturate(0.88);
+}
+
+/* Nav */
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 2rem;
+  padding: 1rem clamp(1rem, 4vw, 3.5rem);
+}
+
+.brand {
+  font-family: var(--font-display), serif;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.navLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.navLinks a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  text-decoration: none;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* Shared paper things */
+
+.photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Every strap is a thin strip of gummed paper, placed by its mount below. */
+.strap {
+  position: absolute;
+  z-index: 1;
+  width: 26%;
+  height: 0.875rem;
+  background: var(--strap);
+  border-block: 1px solid var(--strap-line);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
+}
+
+.strap:nth-of-type(1) {
+  left: -5%;
+  top: 14%;
+  transform: rotate(-3deg);
+}
+
+.strap:nth-of-type(2) {
+  right: -5%;
+  top: 40%;
+  transform: rotate(2deg);
+}
+
+.strap:nth-of-type(3) {
+  left: 34%;
+  bottom: -0.25rem;
+  transform: rotate(-1deg);
+}
+
+.tag {
+  background: var(--sheet);
+  border: 1px solid var(--text);
+  padding: 0.5rem 0.75rem 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.tagSpecies {
+  padding-bottom: 0.25rem;
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.1;
+  border-bottom: 2px solid var(--text);
+}
+
+.tagRows div {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.1875rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.tagRows div:last-child {
+  border-bottom: 0;
+}
+
+.tagRows dt {
+  font-weight: 700;
+}
+
+.tagRows dd {
+  font-family: var(--font-display), serif;
+  font-size: 1.0625rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Hero: the branch's sheet, title beside it */
+
+.hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: 0.5rem clamp(1rem, 4vw, 3.5rem) 0;
+}
+
+.heroSheet {
+  position: relative;
+  width: min(40rem, calc((100vh - 6.5rem) * 0.744));
+  aspect-ratio: 640 / 860;
+  background: var(--sheet);
+  box-shadow: 5px 5px 0 var(--sheet-edge);
+}
+
+.branch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.stem {
+  stroke: var(--stem);
+  stroke-width: 6;
+}
+
+.leaf {
+  fill: var(--leaf);
+}
+
+.leafPale {
+  fill: var(--leaf-pale);
+}
+
+.midrib {
+  stroke: var(--vein);
+  stroke-width: 1.75;
+}
+
+.veins {
+  stroke: var(--vein);
+  stroke-width: 0.9;
+}
+
+.pedicel {
+  stroke: var(--stem);
+  stroke-width: 2;
+}
+
+.cherry {
+  fill: var(--accent);
+}
+
+.cherryUnripe {
+  fill: var(--unripe);
+}
+
+.cherryShine {
+  fill: var(--shine);
+}
+
+.cherryCalyx {
+  fill: var(--stem);
+}
+
+.strapSvg {
+  fill: var(--strap);
+  stroke: var(--strap-line);
+}
+
+.heroPhoto {
+  position: absolute;
+  left: 6%;
+  bottom: 3.5%;
+  width: 30%;
+  aspect-ratio: 4 / 3;
+}
+
+.heroTag {
+  position: absolute;
+  right: 3.5%;
+  bottom: 3%;
+  width: min(48%, 19rem);
+}
+
+.heroText {
+  display: grid;
+  justify-items: start;
+  gap: 1.5rem;
+}
+
+.title {
+  display: grid;
+  font-family: var(--font-display), serif;
+  font-size: clamp(3.25rem, 6.4vw, 7rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  max-width: 34rem;
+  font-size: 1.3125rem;
+  line-height: 1.45;
+}
+
+.heroLink,
+.reserve,
+.submit {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0.125rem;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.root .heroLink {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  color: var(--on-accent);
+}
+
+.heroLink:hover,
+.reserve:hover,
+.submit:hover:not(:disabled) {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.root .heroLink:hover {
+  color: var(--bg);
+}
+
+/* Specimens: an uneven herbarium cabinet */
+
+.heading {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.02;
+}
+
+.specimensSection {
+  padding: 6rem clamp(1rem, 4vw, 3.5rem) 0;
+}
+
+.specimens {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.75rem;
+  margin-top: 3rem;
+  padding: 0;
+  list-style: none;
+}
+
+.specimen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'mount text'
+    'mount label';
+  grid-template-rows: 1fr auto;
+  gap: 1.5rem;
+  padding: clamp(1.25rem, 2.6vw, 2.25rem);
+  background: var(--sheet);
+  box-shadow: 4px 4px 0 var(--sheet-edge);
+}
+
+.mount {
+  position: relative;
+  grid-area: mount;
+  min-height: 24rem;
+}
+
+.specimenText {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.75rem;
+  grid-area: text;
+}
+
+.specimen .tag {
+  grid-area: label;
+  justify-self: end;
+  align-self: end;
+  width: min(100%, 19rem);
+}
+
+.specimen:nth-child(1) {
+  grid-column: 1 / span 7;
+  grid-template-rows: minmax(22rem, 1fr) auto;
+  grid-template-areas:
+    'mount mount'
+    'text label';
+}
+
+.specimen:nth-child(1) .mount {
+  min-height: 0;
+}
+
+.specimen:nth-child(2) {
+  grid-column: 8 / span 5;
+  margin-top: 5rem;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    'mount'
+    'text'
+    'label';
+}
+
+.specimen:nth-child(2) .mount {
+  min-height: 0;
+  width: 72%;
+  aspect-ratio: 1;
+}
+
+.specimen:nth-child(3) {
+  grid-column: 1 / span 5;
+  align-self: start;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    'text'
+    'mount'
+    'label';
+}
+
+.specimen:nth-child(3) .mount {
+  min-height: 0;
+  width: 84%;
+  justify-self: end;
+  aspect-ratio: 5 / 6;
+}
+
+.specimen:nth-child(3) .strap:nth-of-type(2) {
+  top: 62%;
+}
+
+.specimen:nth-child(4) {
+  grid-column: 6 / span 7;
+  margin-top: 2.5rem;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-areas:
+    'text mount'
+    'label mount';
+}
+
+.specimen:nth-child(4) .tag {
+  justify-self: start;
+}
+
+.specimen:nth-child(4) .mount {
+  min-height: 30rem;
+}
+
+.coffeeName {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.description {
+  max-width: 28rem;
+}
+
+.buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.25rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.reserve {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+/* The week: leaves on a line */
+
+.week {
+  padding: 6rem clamp(1rem, 4vw, 3.5rem) 0;
+}
+
+.vine {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  padding: 0;
+  list-style: none;
+}
+
+.vine::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.75rem;
+  border-top: 3px solid var(--stem);
+}
+
+.node {
+  position: relative;
+}
+
+.nodeLeaf {
+  position: relative;
+  width: 3.75rem;
+  height: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.nodeLeaf path {
+  fill: var(--leaf-pale);
+}
+
+.nodeLeaf .nodeRib {
+  fill: none;
+  stroke: var(--vein);
+  stroke-width: 1.5;
+}
+
+.stepTitle {
+  font-family: var(--font-display), serif;
+  font-size: 2.25rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.stepTime {
+  margin: 0.25rem 0 0.5rem;
+  font-weight: 700;
+}
+
+/* Story */
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding: 6rem clamp(1rem, 4vw, 3.5rem) 0;
+}
+
+.storyText {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 34rem;
+  font-size: 1.1875rem;
+}
+
+.storyPhotos {
+  position: relative;
+  padding-bottom: 9rem;
+}
+
+.storyLarge {
+  position: relative;
+  width: 88%;
+  aspect-ratio: 16 / 9;
+}
+
+.storySmall {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 42%;
+  aspect-ratio: 3 / 2;
+  box-shadow: 0 0 0 0.5rem var(--bg);
+}
+
+/* Plate */
+
+.plate {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: clamp(9rem, 15vw, 15rem);
+  gap: 1.25rem 1.5rem;
+  margin: 6rem clamp(1rem, 4vw, 3.5rem) 0;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  background: var(--sheet);
+  box-shadow: 5px 5px 0 var(--sheet-edge);
+}
+
+.figure {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.25rem;
+  font-family: var(--font-display), serif;
+  font-style: italic;
+  font-size: 1.0625rem;
+}
+
+.figurePhoto {
+  position: relative;
+  overflow: hidden;
+}
+
+.figure:nth-child(1) {
+  grid-column: 1 / span 2;
+  grid-row: span 3;
+}
+
+.figure:nth-child(2) {
+  grid-column: 3 / span 4;
+  grid-row: span 2;
+}
+
+.figure:nth-child(3) {
+  grid-column: 3 / span 2;
+  grid-row: span 2;
+}
+
+.figure:nth-child(4) {
+  grid-column: 5 / span 2;
+  grid-row: span 2;
+}
+
+.figure:nth-child(5) {
+  grid-column: 1 / span 2;
+  grid-row: span 1;
+}
+
+/* Form: a collection slip */
+
+.collect {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 32rem);
+  align-items: start;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding: 6rem clamp(1rem, 4vw, 3.5rem) 5rem;
+}
+
+.collectIntro {
+  display: grid;
+  gap: 1rem;
+  max-width: 32rem;
+  font-size: 1.1875rem;
+}
+
+.remaining {
+  font-family: var(--font-display), serif;
+  font-size: 1.875rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.slip {
+  position: relative;
+  padding: 3rem clamp(1.25rem, 3vw, 2.25rem) 2rem;
+  background: var(--sheet);
+  box-shadow: 4px 4px 0 var(--sheet-edge);
+}
+
+.slip::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 1rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  transform: translateX(-50%);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+}
+
+.slipTitle {
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--text);
+  font-family: var(--font-display), serif;
+  font-size: 1.875rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.form {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 6.75rem minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.input,
+.select {
+  width: 100%;
+  min-height: 2.875rem;
+  padding: 0.5rem 0.25rem;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  border-radius: 0;
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.select option {
+  background: var(--sheet);
+  color: var(--text);
+  font-style: normal;
+}
+
+.input:focus-visible,
+.select:focus-visible {
+  outline-offset: 0;
+}
+
+.field:has([aria-invalid='true']) {
+  border-bottom: 2px solid var(--error);
+}
+
+.fieldError,
+.formError {
+  color: var(--error);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.fieldError {
+  grid-column: 1 / -1;
+  padding: 0 0 0.5rem;
+}
+
+.formError {
+  padding-top: 0.5rem;
+}
+
+.submit {
+  justify-self: end;
+  min-height: 3rem;
+  margin-top: 1rem;
+  padding: 0.625rem 1.5rem;
+}
+
+.submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.success {
+  padding-top: 1rem;
+}
+
+.successTitle {
+  font-family: var(--font-display), serif;
+  font-size: 1.875rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* A reservation code never breaks at its hyphen. */
+.successBody strong {
+  white-space: nowrap;
+}
+
+.successBody {
+  margin-top: 0.625rem;
+}
+
+/* Footer */
+
+.footer {
+  display: grid;
+  gap: 0.125rem;
+  padding: 2rem clamp(1rem, 4vw, 3.5rem) 6rem;
+  border-top: 1px solid var(--rule);
+}
+
+.footerName {
+  font-family: var(--font-display), serif;
+  font-size: 1.75rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Smaller screens */
+
+@media (max-width: 75rem) {
+  .specimen:nth-child(1),
+  .specimen:nth-child(2),
+  .specimen:nth-child(3),
+  .specimen:nth-child(4) {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 56rem) {
+  .hero,
+  .story,
+  .collect {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroSheet {
+    width: 100%;
+  }
+
+  .heroText {
+    order: -1;
+    padding-bottom: 0.5rem;
+  }
+
+  .title {
+    font-size: clamp(3.25rem, 13.5vw, 6rem);
+  }
+
+  .vine {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vine::before {
+    display: none;
+  }
+
+  .figure:nth-child(1) {
+    grid-column: 1 / span 3;
+    grid-row: span 2;
+  }
+
+  .figure:nth-child(2) {
+    grid-column: 4 / span 3;
+    grid-row: span 1;
+  }
+
+  .figure:nth-child(3) {
+    grid-column: 4 / span 3;
+    grid-row: span 1;
+  }
+
+  .figure:nth-child(4) {
+    grid-column: 1 / span 3;
+    grid-row: span 1;
+  }
+
+  .figure:nth-child(5) {
+    grid-column: 4 / span 3;
+    grid-row: span 1;
+  }
+}
+
+@media (max-width: 40rem) {
+  .specimen:nth-child(n) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'mount'
+      'text'
+      'label';
+  }
+
+  .specimen:nth-child(1) {
+    grid-template-rows: auto;
+  }
+
+  .specimen:nth-child(n) .mount {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 5 / 4;
+  }
+
+  .specimen:nth-child(even) .mount {
+    width: 82%;
+    aspect-ratio: 1;
+  }
+
+  .specimen:nth-child(n) .tag {
+    justify-self: end;
+    width: min(100%, 19rem);
+  }
+
+  .vine {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroTag {
+    width: 56%;
+    font-size: 0.75rem;
+  }
+
+  .heroTag .tagSpecies {
+    font-size: 1.0625rem;
+  }
+
+  .heroTag .tagRows div {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .heroTag .tagRows dd {
+    font-size: 0.875rem;
+  }
+
+  .heroPhoto {
+    left: 4%;
+    bottom: 3%;
+    width: 34%;
+  }
+}

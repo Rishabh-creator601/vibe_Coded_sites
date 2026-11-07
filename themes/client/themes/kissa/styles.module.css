@@ -1,0 +1,616 @@
+/* A quiet listening cafe. One typeface, plaster and ink, one small red seal, a lot of air. */
+
+.root {
+  --bg: #dedcd6;
+  --text: #1c2230;
+  --accent: #a8321f;
+  --rule: #5f6b45;
+  --curtain: #1f2a4d;
+  --seal: #a8321f;
+  --seal-text: #f1efe9;
+  --error: #8e2415;
+
+  --dock-bg: #1c2230;
+  --dock-fg: #dedcd6;
+  --dock-accent: #dedcd6;
+  --dock-on-accent: #1c2230;
+  --dock-radius: 0;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(7rem, 12vw, 11rem) minmax(0, 1fr);
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mincho), 'Hiragino Mincho ProN', serif;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.95;
+}
+
+:global(html[data-mode='dark']) .root {
+  --bg: #1c1f24;
+  --text: #d8d6ce;
+  --accent: #bfa968;
+  --rule: #7f8a66;
+  --curtain: #2c3656;
+  --seal: #a8321f;
+  --seal-text: #f1efe9;
+  --error: #f0a896;
+
+  --dock-bg: #2a2e35;
+  --dock-fg: #d8d6ce;
+  --dock-accent: #bfa968;
+  --dock-on-accent: #1c1f24;
+}
+
+.root a {
+  color: inherit;
+}
+
+.root :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.root img {
+  object-fit: cover;
+}
+
+/* The wordmark stays beside the page as it scrolls */
+
+.side {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100vh;
+  padding-top: 1.75rem;
+}
+
+.wordmark {
+  writing-mode: vertical-rl;
+  font-size: min(8rem, 11vw, 15vh);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.seal {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--seal);
+  color: var(--seal-text);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.main {
+  min-width: 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem clamp(1.25rem, 4vw, 3.5rem) 1rem 0;
+}
+
+.navLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.navLinks a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  text-decoration: none;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+/* Hero */
+
+.heroPhoto {
+  position: relative;
+  height: 76vh;
+  min-height: 24rem;
+  overflow: hidden;
+}
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  pointer-events: none;
+}
+
+/* These visitors never see it close, even before the page's script has loaded. */
+@media (prefers-reduced-motion: reduce) {
+  .curtain {
+    display: none;
+  }
+}
+
+.strip {
+  display: block;
+  /* Overlaps the next strip slightly, so no hairline of photo shows before it opens. */
+  margin-right: -1px;
+  background: var(--curtain);
+}
+
+.heroText {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 2.5rem clamp(2rem, 6vw, 6rem);
+  padding: 3.5rem clamp(1.25rem, 4vw, 3.5rem) 0 0;
+}
+
+.title {
+  display: grid;
+  align-self: start;
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.heroAside {
+  display: grid;
+  gap: 1rem;
+  max-width: 30rem;
+}
+
+.quietLink,
+.rowButton {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.4em;
+}
+
+.quietLink:hover,
+.rowButton:hover {
+  color: var(--accent);
+}
+
+/* Sections */
+
+.heading {
+  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Coffees: a plain list beside one photograph */
+
+.coffees {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  margin-top: clamp(6rem, 13vw, 12rem);
+}
+
+.rows {
+  display: grid;
+  margin-top: 2.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.row,
+.rowActive {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  padding-block: 3.25rem;
+}
+
+.rowActive::before {
+  content: '';
+  position: absolute;
+  left: -1.375rem;
+  top: 4.25rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--seal);
+}
+
+.rowPhoto {
+  display: none;
+}
+
+.rowHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 1.5rem;
+  width: 100%;
+}
+
+.coffeeName {
+  font-size: clamp(1.625rem, 2.4vw, 2.125rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.price {
+  font-size: 1.25rem;
+}
+
+.detail {
+  font-size: 0.9375rem;
+  line-height: 1.85;
+}
+
+.rowButton {
+  min-height: 2.75rem;
+  padding: 0;
+  background: none;
+  color: inherit;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.stage {
+  position: sticky;
+  top: 8vh;
+  align-self: start;
+  height: 84vh;
+}
+
+.stagePhoto {
+  position: absolute;
+  inset: 0;
+}
+
+/* Rail */
+
+.railSection {
+  margin-top: clamp(6rem, 13vw, 12rem);
+}
+
+.rail {
+  overflow: hidden;
+}
+
+.rail:focus-visible {
+  outline-offset: -4px;
+}
+
+.track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  cursor: grab;
+}
+
+.track:active {
+  cursor: grabbing;
+}
+
+.railPhoto {
+  position: relative;
+  flex: none;
+  height: clamp(16rem, 28vw, 26rem);
+}
+
+.railHint {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+}
+
+/* The week */
+
+.week {
+  margin-top: clamp(6rem, 13vw, 12rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.steps {
+  display: grid;
+  gap: 3.25rem;
+  margin-top: 3.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 0.5rem 2.5rem;
+  max-width: 62rem;
+}
+
+.stepTime {
+  font-size: 1.0625rem;
+}
+
+.stepTitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Story */
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+  margin-top: clamp(6rem, 13vw, 12rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.storyLarge {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.storyText {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.storySmall {
+  position: relative;
+  width: 60%;
+  aspect-ratio: 3 / 2;
+  margin-top: 1.5rem;
+}
+
+/* Form: bare underlines */
+
+.reserve {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  margin-top: clamp(6rem, 13vw, 12rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.reserveNote {
+  margin-top: 1rem;
+}
+
+.form {
+  display: grid;
+  gap: 2.25rem;
+  max-width: 34rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.label {
+  font-size: 0.9375rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.25rem 0;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+  font: inherit;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+}
+
+.select option {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.input:focus-visible,
+.select:focus-visible {
+  outline: 0;
+  border-bottom-color: var(--accent);
+  box-shadow: 0 2px 0 var(--accent);
+}
+
+.input[aria-invalid='true'],
+.select[aria-invalid='true'] {
+  border-bottom: 2px solid var(--error);
+}
+
+.fieldError,
+.formError {
+  color: var(--error);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.fieldError {
+  margin-top: 0.5rem;
+}
+
+.submit {
+  justify-self: start;
+  min-height: 3rem;
+  padding: 0.375rem 2rem;
+  background: var(--text);
+  color: var(--bg);
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--seal);
+  color: var(--seal-text);
+}
+
+.submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* A reservation is stamped */
+.success {
+  position: relative;
+  max-width: 34rem;
+  padding-right: 4rem;
+}
+
+.success::after {
+  content: 'OH';
+  position: absolute;
+  right: 0;
+  top: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  background: var(--seal);
+  color: var(--seal-text);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.successTitle {
+  font-size: 1.625rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* A reservation code never breaks at its hyphen. */
+.successBody strong {
+  white-space: nowrap;
+}
+
+.successBody {
+  margin-top: 0.75rem;
+}
+
+/* Footer */
+
+.footer {
+  margin-top: clamp(6rem, 13vw, 12rem);
+  padding-bottom: 6.5rem;
+  font-size: 0.9375rem;
+}
+
+/* Small screens: the wordmark stays with the first photograph, then the page takes the width */
+
+@media (max-width: 48rem) {
+  .root {
+    display: block;
+  }
+
+  .side {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    width: 4.5rem;
+    height: auto;
+    gap: 1rem;
+    padding-top: 1.25rem;
+  }
+
+  .wordmark {
+    font-size: 3rem;
+  }
+
+  .seal {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+  }
+
+  .nav {
+    justify-content: flex-start;
+    padding: 0.75rem 1rem 0.75rem 4.5rem;
+  }
+
+  .navLinks {
+    gap: 0 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .heroPhoto {
+    height: 62vh;
+    margin-left: 4.5rem;
+  }
+
+  .heroText,
+  .coffees,
+  .week,
+  .story,
+  .reserve,
+  .footer {
+    padding-inline: 1.25rem;
+  }
+
+  .heroText,
+  .coffees,
+  .story,
+  .reserve {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroText {
+    padding-top: 2.5rem;
+  }
+
+  .stage {
+    display: none;
+  }
+
+  .rowPhoto {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    margin-bottom: 1rem;
+  }
+
+  .rowActive::before {
+    display: none;
+  }
+
+  .row,
+  .rowActive {
+    padding-block: 2.25rem;
+  }
+
+  .railSection {
+    padding-inline: 0;
+  }
+
+  .railHint {
+    padding-inline: 1.25rem;
+  }
+
+  .step {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .storySmall {
+    width: 70%;
+  }
+}

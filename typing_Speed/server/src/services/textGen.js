@@ -5,12 +5,15 @@ import WORDS_200 from "../../data/words-200.json" with { type: "json" };
 import WORDS_1000 from "../../data/words-1000.json" with { type: "json" };
 import SENTENCES from "../../data/sentences.json" with { type: "json" };
 import RAW_PASSAGES from "../../data/passages.json" with { type: "json" };
+import AI_PASSAGES from "../../data/ai-passages.json" with { type: "json" };
 import NUMBERS from "../../data/numbers.json" with { type: "json" };
 import BEGINNER from "../../data/beginner.json" with { type: "json" };
 import CODE_JS from "../../data/code/js.json" with { type: "json" };
 import CODE_PYTHON from "../../data/code/python.json" with { type: "json" };
 
-const PASSAGES = RAW_PASSAGES.map((p) => ({ ...p, words: p.text.split(" ").length }));
+const withWordCount = (p) => ({ ...p, words: p.text.split(" ").length });
+const PASSAGES = RAW_PASSAGES.map(withWordCount);
+const PRACTICE_PASSAGES = [...PASSAGES, ...AI_PASSAGES.map(withWordCount)];
 const CODE = { js: CODE_JS, python: CODE_PYTHON };
 
 const CONTRACTIONS = ["don't", "it's", "I'm", "can't", "won't", "that's", "they're", "we're", "you're", "didn't", "isn't", "let's"];
@@ -175,9 +178,10 @@ function snippetText(rand, lang, wordCount, single) {
  * @param {string} [o.stage]    Beginner stage 1a-1d
  * @param {string} [o.lang]     Code: js | python | both
  * @param {string} [o.seed]
+ * @param {boolean} [o.includeAi] Expert: also use AI-written passages. Practice only, so scored tests stay comparable.
  * @returns {{ level: string, seed: string, text: string, source: string | null }}
  */
-export function generateText({ level, words = 50, passage = false, stage = BEGINNER.default, lang = "both", seed } = {}) {
+export function generateText({ level, words = 50, passage = false, stage = BEGINNER.default, lang = "both", seed, includeAi = false } = {}) {
   seed = seed || newSeed();
   const rand = rng(`${level}:${stage}:${lang}:${seed}`);
   const n = passage ? 40 : words;
@@ -198,9 +202,10 @@ export function generateText({ level, words = 50, passage = false, stage = BEGIN
       text = sentenceText(rand, n, passage ? 4 : 0);
       break;
     case "expert": {
+      const pool = includeAi ? PRACTICE_PASSAGES : PASSAGES;
       const used = passage
-        ? [pick(rand, PASSAGES)]
-        : takeUntil(rand, PASSAGES, (l) => l.reduce((a, p) => a + p.words, 0) >= n);
+        ? [pick(rand, pool)]
+        : takeUntil(rand, pool, (l) => l.reduce((a, p) => a + p.words, 0) >= n);
       const joined = used.map((p) => p.text).join(" ");
       text = passage ? joined : trimToWords(joined, n);
       source = [...new Set(used.map((p) => p.source))].join("; ");

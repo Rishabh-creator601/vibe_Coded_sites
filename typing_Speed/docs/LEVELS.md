@@ -56,6 +56,7 @@ A Beginner test uses stage 1d. Practice lets the user pick any stage.
 - Full paragraphs (public-domain books and quotes, with the source shown under the text)
 - Mixed case, quotation marks, brackets, dashes
 - No simplification: what's in the source is what you type
+- **Practice only:** also includes AI-written paragraphs, labelled as AI-written under the text. Scored tests use only the public-domain passages, so results stay comparable.
 
 ### 2.6 Numbers & Symbols
 - Mix of words and number tokens: `$450`, `12/03/2025`, `9:45`, `42%`, `#17`, `a+b=c`, `user@mail.com`
@@ -94,6 +95,7 @@ server/data/
 ├── words-1000.json    # Medium
 ├── sentences.json     # Hard
 ├── passages.json      # Expert
+├── ai-passages.json   # Expert, practice only (written by build-ai-passages.mjs)
 ├── numbers.json       # Numbers & Symbols token templates
 └── code/
     ├── js.json

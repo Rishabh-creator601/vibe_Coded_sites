@@ -1,0 +1,9 @@
+import type { Metadata } from 'next';
+import { AuthScreen } from '@/components/AuthScreen';
+
+export const metadata: Metadata = { title: 'Create an account' };
+
+export default async function RegisterPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const { next } = await searchParams;
+  return <AuthScreen mode="register" next={next} />;
+}

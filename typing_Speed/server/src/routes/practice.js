@@ -25,7 +25,7 @@ const textQuery = z.object({
 
 router.get("/:level/text", levelParam, validate(textQuery, "query"), (req, res) => {
   const { words, passage, stage, lang, seed } = req.query;
-  res.json(generateText({ level: req.params.level, words, passage: passage === "1", stage, lang, seed }));
+  res.json(generateText({ level: req.params.level, words, passage: passage === "1", stage, lang, seed, includeAi: true }));
 });
 
 router.get("/:level/wordbank", levelParam, (req, res) => {

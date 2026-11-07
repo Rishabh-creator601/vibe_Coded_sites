@@ -55,7 +55,7 @@ export const LEVEL_BLURB: Record<string, string> = {
   easy: "The 200 most common words",
   medium: "1,000 words with capitals and punctuation",
   hard: "Full sentences and longer words",
-  expert: "Real paragraphs from books and speeches",
+  expert: "Paragraphs from books and speeches, plus AI-written practice",
   numbers: "Prices, dates, times and symbols",
   code: "JavaScript and Python snippets",
 };

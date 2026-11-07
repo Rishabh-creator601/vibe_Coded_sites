@@ -1,0 +1,72 @@
+/* Only what every theme shares. Colours, type and layout belong to each theme's own module. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+
+html[data-mode='dark'] {
+  color-scheme: dark;
+  background: #101014;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+:target,
+#reserve {
+  scroll-margin-top: 2rem;
+}
+
+/* Text for screen readers only */
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* The light/dark circle is drawn in lib/mode.ts */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
