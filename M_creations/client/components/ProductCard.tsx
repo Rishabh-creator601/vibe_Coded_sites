@@ -33,7 +33,7 @@ export function ProductCard({ product, large = false }: { product: Product; larg
       <span className="mt-3 block font-semibold leading-snug group-hover:underline">{product.name}</span>
       <span className="mt-1 flex flex-wrap items-center justify-between gap-2">
         <span className={product.rate === null ? 'text-sm text-muted' : 'font-semibold text-rani'}>
-          {formatRate(product.rate)}
+          {formatRate(product.rate, product.rateType)}
         </span>
         <ColorDots product={product} />
       </span>

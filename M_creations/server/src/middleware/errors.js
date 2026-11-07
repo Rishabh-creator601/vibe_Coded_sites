@@ -12,8 +12,10 @@ export class HttpError extends Error {
 export function errorHandler(err, _req, res, _next) {
   if (err instanceof ZodError) {
     const issue = err.issues[0];
+    // Our own messages are written for customers. Only zod's generic defaults need the field name.
     const field = issue.path.join('.');
-    return res.status(400).json({ error: field ? `${field}: ${issue.message}` : issue.message });
+    const generic = /^(Required|Invalid|Expected)/.test(issue.message);
+    return res.status(400).json({ error: generic && field ? `${field}: ${issue.message}` : issue.message });
   }
   if (err instanceof multer.MulterError) {
     const message = err.code === 'LIMIT_FILE_SIZE' ? 'Choose an image under 5 MB.' : err.message;

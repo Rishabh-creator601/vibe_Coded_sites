@@ -186,6 +186,10 @@ export default function Theme({ content }: { content: Content }) {
       <main id="top">
         <section className={styles.hero}>
           <div className={styles.heroSheet}>
+            {/* Without scripts the branch would stay ungrown, so show it finished. */}
+            <noscript>
+              <style>{`.${styles.branch} g[style]{transform:none !important}.${styles.stem}{stroke-dasharray:none !important}.${styles.strapSvg}{opacity:1 !important}`}</style>
+            </noscript>
             <Branch />
             <div className={styles.heroPhoto}>
               <div className={styles.photo}>

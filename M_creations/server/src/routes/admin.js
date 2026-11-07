@@ -20,6 +20,7 @@ const productSchema = z.object({
   category: objectId,
   description: z.string().trim().max(2000).default(''),
   rate: z.number().min(0, 'Rate cannot be negative').max(10_000_000).nullable().default(null),
+  rateType: z.enum(['exact', 'from', 'under']).default('exact'),
   colors: z
     .array(
       z.object({

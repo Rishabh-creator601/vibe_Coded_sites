@@ -34,8 +34,8 @@ for (const slug of SLUGS) {
     const response = await page.goto(`${SITE}/${slug}`, { waitUntil: 'networkidle', timeout: 90_000 });
     if (!response.ok()) throw new Error(`${slug} answered ${response.status()}. Is the site running?`);
 
-    // Leave the switcher and Next's dev badge out of the picture.
-    await page.addStyleTag({ content: '[class*="ThemeDock"], nextjs-portal { display: none !important; }' });
+    // Leave the site's own controls and Next's dev badge out of the picture.
+    await page.addStyleTag({ content: '[class*="ThemeDock"], [class*="HomeBar"], nextjs-portal { display: none !important; }' });
     await page.waitForTimeout(1500);
     await page.screenshot({ path: `${OUTPUT}${slug}-${mode}.jpg`, type: 'jpeg', quality: 80 });
     await context.close();

@@ -1,5 +1,10 @@
 /* A quiet listening cafe. One typeface, plaster and ink, one small red seal, a lot of air. */
 
+/* Keeps a control focused by keyboard clear of the fixed theme dock. */
+:global(html):has(.root) {
+  scroll-padding-bottom: 5rem;
+}
+
 .root {
   --bg: #dedcd6;
   --text: #1c2230;
@@ -61,12 +66,13 @@
 
 .side {
   position: sticky;
-  top: 0;
+  /* Stops below the Back to home button, which is pinned to the same corner. */
+  top: 3.75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  height: 100vh;
+  height: calc(100vh - 3.75rem);
   padding-top: 1.75rem;
 }
 

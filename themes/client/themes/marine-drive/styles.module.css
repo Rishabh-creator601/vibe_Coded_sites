@@ -1,5 +1,10 @@
 /* Bombay deco cinema. Everything sits on the page's centre line. */
 
+/* Keeps a control focused by keyboard clear of the fixed theme dock. */
+:global(html):has(.root) {
+  scroll-padding-bottom: 5rem;
+}
+
 .root {
   --bg: #f4cfc0;
   --text: #143f40;
@@ -165,7 +170,8 @@
 
 .heroArch {
   position: relative;
-  width: min(22.5rem, 62vw);
+  /* Shorter on shorter screens, so the headline in the marquee stays clear of the theme dock. */
+  width: min(22.5rem, 62vw, max(14rem, calc((100vh - 28.5rem) * 0.72)));
   aspect-ratio: 18 / 25;
   padding: 0.5rem 0.5rem 0;
   background: var(--bg);
@@ -199,7 +205,7 @@
 .marqueeName {
   margin-top: 0.5rem;
   font-family: var(--font-display), serif;
-  font-size: min(17.2vw, 13rem);
+  font-size: min(17.2vw, 13rem, 22vh);
   line-height: 1;
   white-space: nowrap;
 }

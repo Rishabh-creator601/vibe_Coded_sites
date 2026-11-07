@@ -39,8 +39,9 @@ export default async function HomePage() {
 
   return (
     <main>
-      <section className="cloth overflow-hidden bg-rani text-petal">
-        <div className="mx-auto grid max-w-7xl items-center gap-4 px-5 pt-10 pb-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:px-8 md:py-16">
+      {/* Pulled up under the see-through header, so the tags hang over the rani cloth. */}
+      <section className="cloth -mt-[var(--header-h)] overflow-hidden bg-rani text-petal">
+        <div className="mx-auto grid max-w-7xl items-center gap-4 px-5 pt-[calc(var(--header-h)+2rem)] pb-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:px-8 md:pt-[calc(var(--header-h)+3rem)] md:pb-16">
           <div>
             <h1 className="text-[clamp(4rem,11.5vw,10rem)] leading-[0.95]">M Creations</h1>
             <p className="mt-6 max-w-xl text-xl md:text-2xl">

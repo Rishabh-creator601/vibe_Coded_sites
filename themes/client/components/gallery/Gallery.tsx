@@ -130,38 +130,49 @@ function Featured() {
     <section id="top" className={styles.hero} aria-labelledby="page-title">
       <div className={styles.heroIntro}>
         <h1 id="page-title" className={styles.title}>
-          One page, ten themes
+          <span>One page,</span> <span>ten themes</span>
         </h1>
         <p className={styles.lede}>
           The first page of Odd Hour, a fictional coffee roaster, designed ten different ways. Each has a light and a dark
           mode.
         </p>
-        <p className={styles.hint}>Inside a theme, the bar at the bottom right takes you to the next one or back here.</p>
+        <p className={styles.hint}>
+          Inside a theme, Back to home at the top left brings you here. The bar at the bottom right moves to the next
+          theme.
+        </p>
       </div>
 
       <div className={styles.stage} role="group" aria-roledescription="carousel" aria-label="All themes" onKeyDown={onKeyDown}>
-        <div className={styles.print}>
-          {THEMES.map((item, index) => (
-            <motion.div
-              key={item.slug}
-              className={styles.printLayer}
-              initial={false}
-              animate={{ opacity: index === active ? 1 : 0 }}
-              transition={{ duration: calm ? 0 : 0.25 }}
-            >
-              <Screenshot slug={item.slug} sizes="(max-width: 62rem) 92vw, 58vw" priority={index === 0} />
-            </motion.div>
-          ))}
-          {develops > 0 && !calm ? (
-            <motion.span
-              key={develops}
-              className={styles.develop}
-              aria-hidden="true"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
-            />
-          ) : null}
+        <div className={styles.printFrame}>
+          <div className={styles.print}>
+            {THEMES.map((item, index) => (
+              <motion.div
+                key={item.slug}
+                className={styles.printLayer}
+                initial={false}
+                animate={{ opacity: index === active ? 1 : 0 }}
+                transition={{ duration: calm ? 0 : 0.25 }}
+              >
+                <Screenshot slug={item.slug} sizes="(max-width: 62rem) 92vw, 58vw" priority={index === 0} />
+              </motion.div>
+            ))}
+            {develops > 0 && !calm ? (
+              <motion.span
+                key={develops}
+                className={styles.develop}
+                aria-hidden="true"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
+              />
+            ) : null}
+          </div>
+          <button type="button" className={`${styles.arrow} ${styles.arrowPrevious}`} onClick={() => show(active - 1)} aria-label="Previous theme">
+            <Arrow direction="left" />
+          </button>
+          <button type="button" className={`${styles.arrow} ${styles.arrowNext}`} onClick={() => show(active + 1)} aria-label="Next theme">
+            <Arrow direction="right" />
+          </button>
         </div>
 
         <div className={styles.caption}>
@@ -174,17 +185,9 @@ function Featured() {
             </p>
             <p>{theme.blurb}</p>
           </div>
-          <div className={styles.controls}>
-            <button type="button" className={styles.round} onClick={() => show(active - 1)} aria-label="Previous theme">
-              <Arrow direction="left" />
-            </button>
-            <button type="button" className={styles.round} onClick={() => show(active + 1)} aria-label="Next theme">
-              <Arrow direction="right" />
-            </button>
-            <Link className={styles.open} href={`/${theme.slug}`}>
-              Open {theme.name}
-            </Link>
-          </div>
+          <Link className={styles.open} href={`/${theme.slug}`}>
+            Open {theme.name}
+          </Link>
         </div>
 
         <ol ref={strip} className={styles.strip} aria-label="Choose a theme">
@@ -252,17 +255,17 @@ function CategoryRow({ category }: { category: ThemeCategory }) {
         </div>
         {fits ? null : (
           <div className={styles.controls}>
-            <button type="button" className={styles.roundQuiet} onClick={() => move(-1)} disabled={edges.start} aria-label={`Earlier in ${category.name}`}>
+            <button type="button" className={styles.arrow} onClick={() => move(-1)} disabled={edges.start} aria-label={`Earlier in ${category.name}`}>
               <Arrow direction="left" />
             </button>
-            <button type="button" className={styles.roundQuiet} onClick={() => move(1)} disabled={edges.end} aria-label={`Later in ${category.name}`}>
+            <button type="button" className={styles.arrow} onClick={() => move(1)} disabled={edges.end} aria-label={`Later in ${category.name}`}>
               <Arrow direction="right" />
             </button>
           </div>
         )}
       </div>
 
-      <ul ref={row} className={styles.row} onScroll={measure}>
+      <ul ref={row} className={styles.row} data-count={category.slugs.length} onScroll={measure}>
         {category.slugs.map((slug) => {
           const theme = bySlug(slug);
           return (

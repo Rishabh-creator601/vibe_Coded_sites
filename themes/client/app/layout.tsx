@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import type { ReactNode } from 'react';
+import { HomeBar } from '@/components/HomeBar';
 import { MotionProvider } from '@/components/MotionProvider';
 import { MODE_COOKIE } from '@/lib/themes';
 import './globals.css';
@@ -15,6 +16,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en" data-mode={mode} suppressHydrationWarning>
       <head>{mode ? null : <script dangerouslySetInnerHTML={{ __html: followSystem }} />}</head>
       <body>
+        <HomeBar />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

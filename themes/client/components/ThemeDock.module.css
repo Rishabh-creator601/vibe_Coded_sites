@@ -16,7 +16,8 @@
 .bar {
   display: flex;
   align-items: stretch;
-  min-height: 2.75rem;
+  /* The extra 2px covers the border, so every button is a full 44px tall. */
+  min-height: calc(2.75rem + 2px);
   background: var(--dock-bg, #222);
   border: 1px solid color-mix(in srgb, var(--dock-fg, #fff) 30%, transparent);
   border-radius: var(--dock-radius, 0.5rem);
@@ -70,10 +71,6 @@
 
 .mode {
   border-left: 1px solid color-mix(in srgb, var(--dock-fg, #fff) 30%, transparent);
-}
-
-.home {
-  border-right: 1px solid color-mix(in srgb, var(--dock-fg, #fff) 30%, transparent);
 }
 
 .list {
@@ -162,6 +159,11 @@
   .current {
     flex: 1;
     min-width: 0;
+  }
+
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .list {

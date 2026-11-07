@@ -53,11 +53,6 @@ export default function Theme({ content }: { content: Content }) {
 
   return (
     <div className={`${styles.root} ${fonts}`}>
-      {/* Without scripts the curtain would never open. */}
-      <noscript>
-        <style>{`.${styles.curtain}{display:none}`}</style>
-      </noscript>
-
       <aside className={styles.side}>
         <a className={styles.wordmark} href="#top">
           {content.brand.name}
@@ -96,6 +91,10 @@ export default function Theme({ content }: { content: Content }) {
               priority
               sizes="(max-width: 48rem) calc(100vw - 4.5rem), 88vw"
             />
+            {/* Without scripts the curtain would never open. Kept in here because the root is a grid. */}
+            <noscript>
+              <style>{`.${styles.curtain}{display:none}`}</style>
+            </noscript>
             <div className={styles.curtain} aria-hidden="true">
               {STRIPS.map((strip, index) => (
                 <motion.span

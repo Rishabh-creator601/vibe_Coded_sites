@@ -38,11 +38,11 @@ The first page, `/`, lists all ten themes. It has three ways to find one:
 - **Category carousels:** swipe or use the arrows to browse Paper and print, Bold and retro, Maps
   and signs, and Calm and natural.
 
-Inside a theme, the bar in the bottom-right corner has everything for moving around:
+Inside a theme, the cyan **Back to home** button stays pinned to the top left, and the bar in the
+bottom-right corner moves between themes:
 
 | Control | What it does |
 | --- | --- |
-| Grid icon | Back to the list of themes |
 | Arrows | Previous or next theme, looping from 10 back to 1 |
 | Theme name | Opens a list of all ten, to jump straight to one |
 | Light / Dark | Switches mode, which is remembered across themes and visits |

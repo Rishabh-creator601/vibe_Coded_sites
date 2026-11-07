@@ -84,15 +84,6 @@ export function ThemeDock({ slug }: { slug: string }) {
       </AnimatePresence>
 
       <div className={styles.bar}>
-        <Link className={`${styles.icon} ${styles.home}`} href="/" aria-label="All themes" title="All themes">
-          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="currentColor">
-            <rect x="1.5" y="1.5" width="5.5" height="5.5" />
-            <rect x="9" y="1.5" width="5.5" height="5.5" />
-            <rect x="1.5" y="9" width="5.5" height="5.5" />
-            <rect x="9" y="9" width="5.5" height="5.5" />
-          </svg>
-        </Link>
-
         <Link className={styles.icon} href={`/${previous.slug}`} aria-label={`Previous theme: ${previous.name}`}>
           <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
             <path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

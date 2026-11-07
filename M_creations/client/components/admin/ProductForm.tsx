@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { api } from '@/lib/client-api';
 import { imageSrc } from '@/lib/format';
-import type { Category, Product, ProductColor, ProductImage } from '@/lib/types';
+import type { Category, Product, ProductColor, ProductImage, RateType } from '@/lib/types';
 
 const MAX_PHOTOS = 8;
 
@@ -13,6 +13,7 @@ export function ProductForm({ product, categories }: { product?: Product; catego
   const [name, setName] = useState(product?.name ?? '');
   const [category, setCategory] = useState(product?.category?.id ?? '');
   const [rate, setRate] = useState(product?.rate?.toString() ?? '');
+  const [rateType, setRateType] = useState<RateType>(product?.rateType ?? 'exact');
   const [description, setDescription] = useState(product?.description ?? '');
   const [colors, setColors] = useState<ProductColor[]>(product?.colors ?? []);
   const [images, setImages] = useState<ProductImage[]>(product?.images ?? []);
@@ -62,6 +63,7 @@ export function ProductForm({ product, categories }: { product?: Product; catego
       category,
       description,
       rate: rate === '' ? null : Number(rate),
+      rateType,
       colors,
       images,
       active,
@@ -139,6 +141,14 @@ export function ProductForm({ product, categories }: { product?: Product; catego
           <span id="rate-help" className="mt-1 block text-sm text-muted">
             Leave empty to show “Rate coming soon”.
           </span>
+        </label>
+        <label className="block">
+          <span className="mb-1 block font-medium">Show the rate as</span>
+          <select className="field" value={rateType} onChange={(e) => setRateType(e.target.value as RateType)}>
+            <option value="exact">Exact price (₹1,500)</option>
+            <option value="from">Starting at (Starting at ₹1,500)</option>
+            <option value="under">Under (Under ₹1,500)</option>
+          </select>
         </label>
       </div>
 

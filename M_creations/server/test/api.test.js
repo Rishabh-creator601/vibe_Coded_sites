@@ -75,10 +75,11 @@ test('hidden pieces do not appear publicly', async () => {
 test('register, read session, and log out', async () => {
   const reg = await call('/api/auth/register', {
     method: 'POST',
-    body: { name: 'Asha', email: 'ASHA@test.local', password: 'long-enough' },
+    body: { name: 'Asha', email: 'ASHA@test.local', phone: '98765 43210', password: 'long-enough' },
   });
   assert.equal(reg.status, 201);
   assert.equal(reg.json.user.email, 'asha@test.local');
+  assert.equal(reg.json.user.phone, '+919876543210');
   assert.equal(reg.json.user.role, 'customer');
   assert.equal(reg.json.user.passwordHash, undefined);
   assert.match(reg.rawCookie, /HttpOnly/);
@@ -89,15 +90,57 @@ test('register, read session, and log out', async () => {
   assert.equal((await call('/api/auth/me')).status, 401);
   const duplicate = await call('/api/auth/register', {
     method: 'POST',
-    body: { name: 'Asha', email: 'asha@test.local', password: 'long-enough' },
+    body: { name: 'Asha', email: 'asha@test.local', phone: '9876543210', password: 'long-enough' },
   });
   assert.equal(duplicate.status, 409);
+});
+
+test('sign-up needs a real phone number', async () => {
+  const body = { name: 'Bina', email: 'bina@test.local', password: 'long-enough' };
+  assert.equal((await call('/api/auth/register', { method: 'POST', body })).status, 400);
+  const short = await call('/api/auth/register', { method: 'POST', body: { ...body, phone: '12345' } });
+  assert.equal(short.status, 400);
+  assert.equal(short.json.error, 'Enter a valid phone number, like 98765 43210');
+});
+
+test('a logged-in user can add or change their phone number', async () => {
+  assert.equal((await call('/api/auth/me', { method: 'PATCH', body: { phone: '9876543210' } })).status, 401);
+
+  // A Google account starts with no phone number.
+  await User.create({
+    name: 'Chitra',
+    email: 'chitra@test.local',
+    googleId: 'g-1',
+    passwordHash: await bcrypt.hash('long-enough', 4),
+  });
+  const { cookie, json } = await call('/api/auth/login', {
+    method: 'POST',
+    body: { email: 'chitra@test.local', password: 'long-enough' },
+  });
+  assert.equal(json.user.phone, null);
+
+  const bad = await call('/api/auth/me', { method: 'PATCH', cookie, body: { phone: 'call me' } });
+  assert.equal(bad.status, 400);
+
+  for (const [typed, saved] of [
+    ['098765-43210', '+919876543210'],
+    ['+91 91234 56789', '+919123456789'],
+    ['+14155552671', '+14155552671'],
+  ]) {
+    const res = await call('/api/auth/me', { method: 'PATCH', cookie, body: { phone: typed } });
+    assert.equal(res.json.user.phone, saved);
+  }
+  assert.equal((await call('/api/auth/me', { cookie })).json.user.phone, '+14155552671');
+
+  // The route only changes the phone number, whatever else is sent.
+  const sneaky = await call('/api/auth/me', { method: 'PATCH', cookie, body: { phone: '9876543210', role: 'admin' } });
+  assert.equal(sneaky.json.user.role, 'customer');
 });
 
 test('a role sent at sign-up is ignored, and login rejects bad input', async () => {
   const reg = await call('/api/auth/register', {
     method: 'POST',
-    body: { name: 'Eve', email: 'eve@test.local', password: 'long-enough', role: 'admin' },
+    body: { name: 'Eve', email: 'eve@test.local', phone: '9876543210', password: 'long-enough', role: 'admin' },
   });
   assert.equal(reg.json.user.role, 'customer');
 
@@ -164,6 +207,27 @@ test('admin can create, edit and delete a piece', async () => {
   });
   assert.equal(deleted.status, 200);
   assert.equal((await call('/api/products/boat-neck-2')).status, 404);
+});
+
+test('a rate can be a starting price, and defaults to an exact one', async () => {
+  const body = { name: 'Rate type', category: String(blouses._id), rate: 400 };
+  const exact = await call('/api/admin/products', { method: 'POST', cookie: adminCookie, body });
+  assert.equal(exact.json.product.rateType, 'exact');
+
+  const from = await call('/api/admin/products', {
+    method: 'POST',
+    cookie: adminCookie,
+    body: { ...body, rateType: 'from' },
+  });
+  assert.equal(from.json.product.rateType, 'from');
+  assert.equal((await call(`/api/products/${from.json.product.slug}`)).json.product.rateType, 'from');
+
+  const bad = await call('/api/admin/products', {
+    method: 'POST',
+    cookie: adminCookie,
+    body: { ...body, rateType: 'free' },
+  });
+  assert.equal(bad.status, 400);
 });
 
 test('product validation rejects bad colours and unsafe image links', async () => {

@@ -64,7 +64,7 @@ export default async function AdminProducts({ searchParams }: { searchParams: Pr
                   </td>
                   <td className="py-2 pr-4">{product.category?.name ?? 'None'}</td>
                   <td className={`py-2 pr-4 ${product.rate === null ? 'text-muted' : ''}`}>
-                    {product.rate === null ? 'Not set' : formatRate(product.rate)}
+                    {product.rate === null ? 'Not set' : formatRate(product.rate, product.rateType)}
                   </td>
                   <td className={`py-2 pr-4 ${product.images.length ? '' : 'text-muted'}`}>
                     {product.images.length || 'None'}

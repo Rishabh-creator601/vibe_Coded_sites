@@ -9,6 +9,8 @@ const workspaceRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '.
 const nextConfig = {
   turbopack: { root: workspaceRoot },
   outputFileTracingRoot: workspaceRoot,
+  // The badge sits bottom left, on top of the Home button on phones. Errors still show without it.
+  devIndicators: false,
   images: { qualities: [75, 85] },
   async rewrites() {
     return [{ source: '/api/:path*', destination: `${API_URL}/api/:path*` }];

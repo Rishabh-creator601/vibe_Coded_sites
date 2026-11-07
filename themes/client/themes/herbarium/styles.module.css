@@ -1,5 +1,10 @@
 /* Pressed coffee on celadon sheets. Latin and headings in italic Cormorant; everything else plain sans. */
 
+/* Keeps a control focused by keyboard clear of the fixed theme dock. */
+:global(html):has(.root) {
+  scroll-padding-bottom: 5rem;
+}
+
 .root {
   --bg: #dce6d2;
   --text: #1e3a2a;
@@ -201,7 +206,7 @@
 
 .heroSheet {
   position: relative;
-  width: min(40rem, calc((100vh - 6.5rem) * 0.744));
+  width: min(40rem, calc((100vh - 10.25rem) * 0.744));
   aspect-ratio: 640 / 860;
   background: var(--sheet);
   box-shadow: 5px 5px 0 var(--sheet-edge);

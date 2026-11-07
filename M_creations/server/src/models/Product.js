@@ -8,6 +8,8 @@ const productSchema = new mongoose.Schema(
     description: { type: String, default: '' },
     // Null until the owner sets it; the site then shows "Rate coming soon".
     rate: { type: Number, default: null, min: 0 },
+    // How to read the rate: "₹850", "Starting at ₹850" or "Under ₹850".
+    rateType: { type: String, enum: ['exact', 'from', 'under'], default: 'exact' },
     colors: {
       type: [{ _id: false, name: { type: String, required: true }, hex: { type: String, required: true } }],
       default: [],

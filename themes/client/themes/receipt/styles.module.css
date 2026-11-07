@@ -1,5 +1,12 @@
 /* The page is one long thermal receipt on a cobalt counter. Capitals and mono belong to the object. */
 
+/* Keeps a control focused by keyboard clear of the fixed theme dock. */
+:global(html):has(.root) {
+  scroll-padding-bottom: 5rem;
+  /* And clear of the sticky printer when tabbing backwards. */
+  scroll-padding-top: 5.5rem;
+}
+
 .root {
   --counter: #1d3fd1;
   --paper: #fafaf5;
@@ -64,6 +71,13 @@
   background: var(--head);
   color: var(--head-text);
   box-shadow: 0 6px 14px rgb(0 0 0 / 0.35);
+}
+
+/* Narrower than this, the bar would run under the Back to home button, so it scrolls away. */
+@media (max-width: 58rem) {
+  .printer {
+    position: relative;
+  }
 }
 
 .printer :focus-visible {

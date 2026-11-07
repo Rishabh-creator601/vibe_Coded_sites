@@ -69,6 +69,8 @@ export function serializeProduct(p) {
     slug: p.slug,
     description: p.description,
     rate: p.rate,
+    // Pieces saved before rateType existed have no value, and lean() skips defaults.
+    rateType: p.rateType ?? 'exact',
     colors: p.colors,
     images: p.images.map(({ url, publicId }) => ({ url, publicId })),
     active: p.active,

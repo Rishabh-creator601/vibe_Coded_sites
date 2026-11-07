@@ -35,7 +35,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         )}
         <h1 className="mt-3 text-5xl text-rani">{product.name}</h1>
         <p className={product.rate === null ? 'mt-4 text-xl text-muted' : 'mt-4 text-3xl font-semibold'}>
-          {formatRate(product.rate)}
+          {formatRate(product.rate, product.rateType)}
         </p>
 
         {product.colors.length > 0 && (

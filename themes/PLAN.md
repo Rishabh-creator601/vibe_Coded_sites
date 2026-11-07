@@ -28,7 +28,8 @@ Browser ──> Next.js (client/, port 3000) ──/api rewrite──> Express (
 | `client/app/<slug>/page.tsx` | One route per theme, so each loads only its own CSS, JS and fonts |
 | `client/app/page.tsx` | `/` is the list page: a cyan header and featured carousel, then a carousel per category |
 | `client/themes/<slug>/` | The theme: `index.tsx` for its own markup, `styles.module.css` for its own design |
-| `client/components/ThemeDock` | Floating switcher: back to the gallery, previous, next, list of all 10, light/dark |
+| `client/components/ThemeDock` | Floating switcher: previous, next, list of all 10, light/dark |
+| `client/components/HomeBar` | Cyan Back to home button, pinned top left on every theme |
 | `client/components/ReservationForm` | One form with one behaviour, styled by each theme's CSS |
 | `GET /api/content` | Page content plus the live batch: next roast date and bags left |
 | `POST /api/reservations` | Validates the form and saves it to MongoDB |

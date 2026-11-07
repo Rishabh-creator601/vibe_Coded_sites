@@ -78,6 +78,11 @@ export default function Theme({ content }: { content: Content }) {
 
   return (
     <div className={`${styles.root} ${fonts}`}>
+      {/* Without scripts the stripes would stay undrawn, so show them whole. */}
+      <noscript>
+        <style>{`${STRIPE_CLASS.map((name) => `.${name}`).join(',')}{stroke-dasharray:none !important}`}</style>
+      </noscript>
+
       <header className={styles.nav}>
         <a className={styles.brand} href="#top">
           {content.brand.name}

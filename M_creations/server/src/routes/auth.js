@@ -20,9 +20,28 @@ const limiter = rateLimit({
 
 const email = z.string().trim().toLowerCase().email('Enter a valid email address').max(200);
 
+/** Stores +91XXXXXXXXXX for Indian mobiles, however they were typed. Other countries need their + code. */
+function normalizePhone(text) {
+  const value = text.replace(/[\s().-]/g, '');
+  const indian = value.match(/^(?:\+91|91|0)?([6-9]\d{9})$/);
+  if (indian) return `+91${indian[1]}`;
+  return /^\+[1-9]\d{7,14}$/.test(value) ? value : null;
+}
+
+const phone = z
+  .string({ required_error: 'Enter your phone number' })
+  .max(24, 'Enter a valid phone number, like 98765 43210')
+  .transform((text, ctx) => {
+    const normalized = normalizePhone(text);
+    if (normalized) return normalized;
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Enter a valid phone number, like 98765 43210' });
+    return z.NEVER;
+  });
+
 const registerSchema = z.object({
   name: z.string().trim().min(1, 'Enter your name').max(80),
   email,
+  phone,
   // bcrypt only reads the first 72 bytes.
   password: z.string().min(8, 'Use at least 8 characters').max(72),
 });
@@ -37,6 +56,7 @@ authRoutes.post('/register', limiter, async (req, res) => {
   const user = await User.create({
     name: body.name,
     email: body.email,
+    phone: body.phone,
     passwordHash: await bcrypt.hash(body.password, 12),
   });
   setSession(res, user);
@@ -79,8 +99,12 @@ authRoutes.post('/google', limiter, async (req, res) => {
   } else if (!user.googleId) {
     user.googleId = payload.sub;
     // Sign-up doesn't verify email, so someone else may have registered this
-    // address first. Google has now proved who owns it, so drop that password.
-    if (user.role !== 'admin') user.passwordHash = null;
+    // address first. Google has now proved who owns it, so drop that password
+    // and the phone number that came with it.
+    if (user.role !== 'admin') {
+      user.passwordHash = null;
+      user.phone = null;
+    }
     await user.save();
   }
   setSession(res, user);
@@ -93,5 +117,12 @@ authRoutes.post('/logout', (_req, res) => {
 });
 
 authRoutes.get('/me', requireAuth, (req, res) => {
+  res.json({ user: req.user.toPublic() });
+});
+
+authRoutes.patch('/me', requireAuth, async (req, res) => {
+  const body = z.object({ phone }).parse(req.body);
+  req.user.phone = body.phone;
+  await req.user.save();
   res.json({ user: req.user.toPublic() });
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, type MotionStyle } from 'framer-motion';
 import Image from 'next/image';
 import { ReservationForm } from '@/components/ReservationForm';
 import { ThemeDock } from '@/components/ThemeDock';
@@ -70,12 +70,16 @@ export default function Theme({ content }: { content: Content }) {
       <main id="top">
         <section className={styles.hero}>
           <div className={styles.stage}>
+            {/* Without scripts the rays would stay stacked, so show them fanned. */}
+            <noscript>
+              <style>{`.${styles.rayLong},.${styles.rayShort}{transform:rotate(var(--angle)) !important}.${styles.bulbs}{opacity:1 !important}`}</style>
+            </noscript>
             <div className={styles.rays} aria-hidden="true">
               {RAYS.map((ray) => (
                 <motion.span
                   key={ray.angle}
                   className={ray.long ? styles.rayLong : styles.rayShort}
-                  style={{ originX: 0.5, originY: 1 }}
+                  style={{ originX: 0.5, originY: 1, '--angle': `${ray.angle}deg` } as MotionStyle}
                   initial={{ rotate: 0 }}
                   animate={{ rotate: ray.angle }}
                   transition={{ duration: 1.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}

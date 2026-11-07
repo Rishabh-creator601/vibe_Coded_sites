@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { api } from '@/lib/client-api';
-import { safeNext } from '@/lib/format';
+import { afterLogin } from '@/lib/format';
 import type { User } from '@/lib/types';
+import { PHONE_HELP } from './PhoneForm';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
@@ -62,7 +63,7 @@ export function AuthForm({ mode, next }: { mode: 'login' | 'register'; next?: st
     setError('');
     try {
       const { user } = await request;
-      router.replace(safeNext(next, user.role === 'admin' ? '/admin' : '/account'));
+      router.replace(afterLogin(user, next));
       router.refresh();
     } catch (err) {
       setError((err as Error).message);
@@ -104,6 +105,13 @@ export function AuthForm({ mode, next }: { mode: 'login' | 'register'; next?: st
           <span className="mb-1 block font-medium">Email</span>
           <input className="field" name="email" type="email" autoComplete="email" required />
         </label>
+        {!isLogin && (
+          <label className="block">
+            <span className="mb-1 block font-medium">WhatsApp number</span>
+            <input className="field" name="phone" type="tel" autoComplete="tel" required maxLength={24} />
+            <span className="mt-1 block text-sm text-muted">{PHONE_HELP}</span>
+          </label>
+        )}
         <label className="block">
           <span className="mb-1 block font-medium">Password</span>
           <input

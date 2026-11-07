@@ -1,0 +1,67 @@
+.strip {
+  --fill: #11c5dc;
+  --hover: #7debf8;
+  --ink: #03323b;
+
+  position: relative;
+  z-index: 60;
+  height: 3.75rem;
+  background: var(--ink);
+}
+
+:global(html[data-mode='dark']) .strip {
+  --fill: #35e3f7;
+  --hover: #a5f4fd;
+}
+
+.button {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.125rem 0 0.875rem;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  /* The dark ring keeps the button distinct over a cyan or blue theme once the strip has gone. */
+  box-shadow:
+    0 0 0 2px var(--ink),
+    0 6px 16px rgb(3 50 59 / 0.4);
+  transition: background 0.12s ease;
+}
+
+.button:hover {
+  background: var(--hover);
+}
+
+.button svg {
+  flex: none;
+  transition: transform 0.15s ease;
+}
+
+.button:hover svg {
+  transform: translateX(-3px);
+}
+
+.button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button svg {
+    transition: none;
+  }
+
+  .button:hover svg {
+    transform: none;
+  }
+}
