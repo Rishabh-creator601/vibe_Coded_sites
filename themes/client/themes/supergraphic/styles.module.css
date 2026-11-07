@@ -1,7 +1,8 @@
 /* 1970s hi-fi sleeve. Fat stripes, circles, capsules and nothing square. */
 
-/* Keeps a control focused by keyboard clear of the fixed theme dock. */
+/* Keeps a control focused by keyboard clear of the fixed theme dock and the pinned home button. */
 :global(html):has(.root) {
+  scroll-padding-top: 4.5rem;
   scroll-padding-bottom: 5rem;
 }
 

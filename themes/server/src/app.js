@@ -7,8 +7,9 @@ import { reservationsRouter } from './routes/reservations.js';
 export function createApp() {
   const app = express();
 
-  // Next.js proxies /api here, so the visitor's address is in X-Forwarded-For.
-  app.set('trust proxy', 1);
+  // How many proxies sit in front of the API, so the rate limit sees each visitor's own address.
+  // Locally that is Next.js alone. On Render behind Vercel it is two: Vercel, then Render.
+  app.set('trust proxy', Number(process.env.TRUST_PROXY) || 1);
   app.use(helmet());
   app.use(express.json({ limit: '10kb' }));
 

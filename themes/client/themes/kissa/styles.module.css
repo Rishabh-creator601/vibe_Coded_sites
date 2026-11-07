@@ -1,7 +1,8 @@
 /* A quiet listening cafe. One typeface, plaster and ink, one small red seal, a lot of air. */
 
-/* Keeps a control focused by keyboard clear of the fixed theme dock. */
+/* Keeps a control focused by keyboard clear of the fixed theme dock and the pinned home button. */
 :global(html):has(.root) {
+  scroll-padding-top: 4.5rem;
   scroll-padding-bottom: 5rem;
 }
 

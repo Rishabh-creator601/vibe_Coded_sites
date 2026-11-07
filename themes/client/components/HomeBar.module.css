@@ -1,3 +1,10 @@
+/* On theme pages, keep focused and linked-to elements clear of the pinned button above
+   and the theme bar below when the browser scrolls them into view. */
+:global(html):has(.strip) {
+  scroll-padding-top: 4.5rem;
+  scroll-padding-bottom: 5rem;
+}
+
 .strip {
   --fill: #11c5dc;
   --hover: #7debf8;
